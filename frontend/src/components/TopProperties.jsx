@@ -18,10 +18,10 @@ const TopPropertiesForSaleRent = () => {
 
   const fetchProperties = async () => {
     try {
-      const resSale = await fetch("https://aswan-real-estate.onrender.com/api/properties/sale");
+      const resSale = await fetch("http://localhost:3000/api/properties/sale");
       const saleData = await resSale.json();
 
-      const resRent = await fetch("https://aswan-real-estate.onrender.com/api/properties/rent");
+      const resRent = await fetch("http://localhost:3000/api/properties/rent");
       const rentData = await resRent.json();
 
       // 👉 Detect property type safely

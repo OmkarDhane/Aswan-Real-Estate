@@ -16,8 +16,8 @@ const AdminDashboard = () => {
 
   const fetchProperties = async () => {
     try {
-      const saleRes = await fetch('https://aswan-real-estate.onrender.com/api/properties/sale');
-      const rentRes = await fetch('https://aswan-real-estate.onrender.com/api/properties/rent');
+      const saleRes = await fetch('http://localhost:3000/api/properties/sale');
+      const rentRes = await fetch('http://localhost:3000/api/properties/rent');
       
       const saleData = await saleRes.json();
       const rentData = await rentRes.json();
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this property?')) return;
 
     try {
-      const response = await fetch(`https://aswan-real-estate.onrender.com/api/properties/${typeKey}/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/properties/${typeKey}/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {

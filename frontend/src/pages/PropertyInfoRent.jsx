@@ -31,7 +31,7 @@ const PropertyInfoRent = () => {
 
   const fetchProperty = async () => {
     try {
-      const response = await fetch(`https://aswan-real-estate.onrender.com/api/properties/rent/${id}`);
+      const response = await fetch(`http://localhost:3000/api/properties/rent/${id}`);
       if (response.ok) {
         const data = await response.json();
         setProperty({ ...data, status: "For Rent" });
@@ -46,7 +46,7 @@ const PropertyInfoRent = () => {
 
   const fetchAllProperties = async () => {
     try {
-      const response = await fetch("https://aswan-real-estate.onrender.com/api/properties/rent");
+      const response = await fetch("http://localhost:3000/api/properties/rent");
       const data = await response.json();
       setAllProperties(data);
     } catch (error) {

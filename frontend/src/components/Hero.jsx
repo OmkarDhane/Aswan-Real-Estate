@@ -15,7 +15,7 @@ const Hero = () => {
 
   const fetchSale = async () => {
     try {
-      const res = await fetch("https://aswan-real-estate.onrender.com/api/properties/sale");
+      const res = await fetch("http://localhost:3000/api/properties/sale");
       const data = await res.json();
       const mappedData = data.map(item => ({ ...item, type: 'Buy' }));
       setSale(mappedData.slice(0, 2)); 
@@ -26,7 +26,7 @@ const Hero = () => {
 
   const fetchRent = async () => {
     try {
-      const res = await fetch("https://aswan-real-estate.onrender.com/api/properties/rent");
+      const res = await fetch("http://localhost:3000/api/properties/rent");
       const data = await res.json();
       const mappedData = data.map(item => ({ ...item, type: 'Rent' }));
       setRent(mappedData.slice(0, 2)); 

@@ -32,7 +32,7 @@ const PropertyForm = () => {
 
   const fetchProperty = async () => {
     try {
-      const response = await fetch(`https://aswan-real-estate.onrender.com/api/properties/${type}/${id}`);
+      const response = await fetch(`http://localhost:3000/api/properties/${type}/${id}`);
       const data = await response.json();
       setFormData({
         ...data,
@@ -59,8 +59,8 @@ const PropertyForm = () => {
     };
 
     const url = isEditMode
-      ? `https://aswan-real-estate.onrender.com/api/properties/${type}/${id}`
-      : `https://aswan-real-estate.onrender.com/api/properties/${type}`;
+      ? `http://localhost:3000/api/properties/${type}/${id}`
+      : `http://localhost:3000/api/properties/${type}`;
     const method = isEditMode ? 'PUT' : 'POST';
 
     try {
