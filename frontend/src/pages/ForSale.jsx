@@ -24,7 +24,7 @@ const ForSale = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/properties/sale');
+      const response = await fetch('https://aswan-real-estate.onrender.com/api/properties/sale');
       const data = await response.json();
       setProperties(data);
       setLoading(false);
