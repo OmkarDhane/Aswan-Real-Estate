@@ -20,71 +20,66 @@ const SearchPopup = ({ onClose }) => {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-start justify-center"
-      style={{ backgroundColor: "#000" }}
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-80 p-4 sm:p-8"
     >
       {/* INNER BOX */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="mt-20 p-8 w-[80%] max-w-[900px]"
-        style={{ color: "white", fontFamily: "monospace" }}
+        className="mt-20 w-full sm:w-4/5 md:w-3/5 lg:w-2/5 p-6 sm:p-8 bg-gray-900 rounded-xl shadow-lg"
       >
         {/* TOP CLOSE BUTTON */}
-        <div className="flex justify-end w-full mb-10">
+        <div className="flex justify-end mb-6">
           <button
             onClick={onClose}
-            className="text-white text-xl"
+            className="text-white text-2xl sm:text-3xl font-light"
             aria-label="Close"
-            style={{ fontWeight: 100 }}
           >
             ×
           </button>
         </div>
 
-        {/* TOP TABS */}
-        <div className="flex gap-10 mb-6 text-lg">
-          <span className="border-b border-white pb-1">Property Search</span>
-        </div>
+        {/* TITLE */}
+        <h2 className="text-xl sm:text-2xl font-semibold text-white mb-6 text-center">
+          Property Search
+        </h2>
 
         {/* SEARCH BAR */}
-        <div className="flex items-center border border-gray-600 w-full px-4 py-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-2 w-full">
           <input
             type="text"
             placeholder="Area or Community"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-transparent text-white placeholder-gray-500 focus:outline-none"
+            className="flex-1 bg-gray-800 text-white placeholder-gray-400 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
           />
 
-          {/* BUY / RENT buttons */}
-          <div className="flex gap-6 text-white ml-4">
-
-            {/* BUY */}
-            <span
-              className="cursor-pointer text-white hover:text-red-500 transition"
+          <div className="flex gap-2 sm:gap-4 justify-center">
+            <button
               onClick={() => {
                 setMode("buy");
-                navigate(`/for-sale?search=${encodeURIComponent(query)}`);
-                onClose();
+                handleSearch();
               }}
+              className={`px-4 py-2 rounded-md font-medium transition ${
+                mode === "buy" ? "bg-red-600 text-white" : "bg-gray-700 text-gray-200 hover:bg-red-500"
+              }`}
             >
               Buy
-            </span>
+            </button>
 
-            {/* RENT */}
-            <span
-              className="cursor-pointer text-white hover:text-red-500 transition"
+            <button
               onClick={() => {
                 setMode("rent");
-                navigate(`/for-rent?search=${encodeURIComponent(query)}`);
-                onClose();
+                handleSearch();
               }}
+              className={`px-4 py-2 rounded-md font-medium transition ${
+                mode === "rent" ? "bg-red-600 text-white" : "bg-gray-700 text-gray-200 hover:bg-red-500"
+              }`}
             >
               Rent
-            </span>
+            </button>
           </div>
         </div>
       </div>

@@ -5,8 +5,8 @@ const Hero = () => {
   const navigate = useNavigate();
   const [sale, setSale] = useState([]);
   const [rent, setRent] = useState([]);
-  const [filterType, setFilterType] = useState('All'); 
-  const [search, setSearch] = useState('');
+  const [filterType, setFilterType] = useState("All");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchSale();
@@ -15,10 +15,10 @@ const Hero = () => {
 
   const fetchSale = async () => {
     try {
-      const res = await fetch("https://aswan-real-estate.onrender.com/api/properties/sale");
+      const res = await fetch("http://localhost:3000/api/properties/sale");
       const data = await res.json();
-      const mappedData = data.map(item => ({ ...item, type: 'Buy' }));
-      setSale(mappedData.slice(0, 2)); 
+      const mappedData = data.map((item) => ({ ...item, type: "Buy" }));
+      setSale(mappedData.slice(0, 2));
     } catch (error) {
       console.error("Error fetching sale properties:", error);
     }
@@ -26,10 +26,10 @@ const Hero = () => {
 
   const fetchRent = async () => {
     try {
-      const res = await fetch("https://aswan-real-estate.onrender.com/api/properties/rent");
+      const res = await fetch("http://localhost:3000/api/properties/rent");
       const data = await res.json();
-      const mappedData = data.map(item => ({ ...item, type: 'Rent' }));
-      setRent(mappedData.slice(0, 2)); 
+      const mappedData = data.map((item) => ({ ...item, type: "Rent" }));
+      setRent(mappedData.slice(0, 2));
     } catch (error) {
       console.error("Error fetching rent properties:", error);
     }
@@ -37,12 +37,12 @@ const Hero = () => {
 
   const propertiesToShow = () => {
     let props = [];
-    if (filterType === 'Buy') props = sale;
-    else if (filterType === 'Rent') props = rent;
+    if (filterType === "Buy") props = sale;
+    else if (filterType === "Rent") props = rent;
     else props = [...sale, ...rent];
 
-    if (search.trim() !== '') {
-      props = props.filter(p =>
+    if (search.trim() !== "") {
+      props = props.filter((p) =>
         p.title.toLowerCase().includes(search.toLowerCase())
       );
     }
@@ -50,7 +50,7 @@ const Hero = () => {
   };
 
   const handleClick = (property) => {
-    if (property.type === 'Buy') {
+    if (property.type === "Buy") {
       navigate(`/property-info-sale/${property._id || property.id}`);
     } else {
       navigate(`/property-info-rent/${property._id || property.id}`);
@@ -58,32 +58,32 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-white text-gray-900 py-16">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <section className="bg-white text-gray-900 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
-        {/* Left Hero Text with fade-in */}
-        <div className="lg:col-span-6 flex flex-col justify-center space-y-6 animate-fadeIn">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-gray-900 text-center lg:text-left">
+        {/* Left Hero Text */}
+        <div className="lg:col-span-6 flex flex-col justify-center space-y-6 animate-fadeIn text-center lg:text-left">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-gray-900">
             Welcome to Dubai's <span className="text-red-500 italic">award-winning</span> real estate agency
           </h1>
-          <p className="text-gray-700 text-lg max-w-lg text-center lg:text-left mx-auto lg:mx-0">
+          <p className="text-gray-700 text-base sm:text-lg max-w-lg mx-auto lg:mx-0">
             Search properties across Dubai — villas, apartments, luxury listings
           </p>
 
-          {/* Search input */}
-          <div className="mt-6 w-full">
+          {/* Search Input */}
+          <div className="mt-4 w-full max-w-md mx-auto lg:mx-0">
             <input
               type="text"
               placeholder="Search by area or title"
-              className="w-full border border-gray-200 hover:border-gray-400 rounded-md px-4 py-3 text-base font-medium transition-colors"
+              className="w-full border border-gray-200 hover:border-gray-400 rounded-md px-4 py-3 text-base sm:text-lg font-medium transition-colors"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
           {/* Book a property valuation */}
-          <p className="mt-4 text-sm md:text-base text-gray-500 text-center lg:text-left">
-            or{' '}
+          <p className="mt-3 text-sm sm:text-base text-gray-500">
+            or{" "}
             <Link
               to="/valuation"
               className="text-black underline hover:text-red-500 transition-colors uppercase tracking-widest font-medium"
@@ -93,17 +93,17 @@ const Hero = () => {
           </p>
         </div>
 
-        {/* Right Thumbnails + Buttons */}
+        {/* Right Thumbnails */}
         <div className="lg:col-span-6 flex flex-col">
-          {/* Filter buttons */}
-          <div className="flex justify-end gap-2 mb-4">
-            {['All', 'Buy', 'Rent'].map((type) => (
+          {/* Filter Buttons */}
+          <div className="flex justify-center lg:justify-end gap-2 mb-4 flex-wrap">
+            {["All", "Buy", "Rent"].map((type) => (
               <button
                 key={type}
                 className={`px-4 py-2 rounded-md font-medium transition ${
                   filterType === type
-                    ? 'bg-red-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
                 onClick={() => setFilterType(type)}
               >
@@ -112,16 +112,16 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Thumbnails */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Property Thumbnails */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {propertiesToShow().map((property) => (
               <div
                 key={property._id || property.id}
-                className="relative w-full h-52 rounded-md overflow-hidden shadow-lg cursor-pointer transform transition duration-300 hover:scale-105"
+                className="relative w-full h-48 sm:h-52 rounded-md overflow-hidden shadow-lg cursor-pointer transform transition duration-300 hover:scale-105"
                 onClick={() => handleClick(property)}
               >
                 <img
-                  src={property.images?.[0] || '/assets/placeholder.jpg'}
+                  src={property.images?.[0] || "/assets/placeholder.jpg"}
                   alt={property.title}
                   className="w-full h-full object-cover"
                 />
@@ -132,13 +132,13 @@ const Hero = () => {
             ))}
 
             {propertiesToShow().length === 0 && (
-              <p className="text-center text-gray-500 col-span-2">No properties found.</p>
+              <p className="text-center text-gray-500 col-span-1 sm:col-span-2">No properties found.</p>
             )}
           </div>
         </div>
       </div>
 
-      {/* Tailwind custom animation */}
+      {/* Fade-in animation */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }

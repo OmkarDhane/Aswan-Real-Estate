@@ -1,6 +1,32 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
+
+// Import slick-carousel CSS files
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const SampleNextArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", right: 10, zIndex: 20 }}
+      onClick={onClick}
+    />
+  );
+};
+
+const SamplePrevArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", left: 10, zIndex: 20 }}
+      onClick={onClick}
+    />
+  );
+};
 
 const TopPropertiesForSaleRent = () => {
   const navigate = useNavigate();
@@ -18,17 +44,15 @@ const TopPropertiesForSaleRent = () => {
 
   const fetchProperties = async () => {
     try {
-      const resSale = await fetch("https://aswan-real-estate.onrender.com/api/properties/sale");
+      const resSale = await fetch("http://localhost:3000/api/properties/sale");
       const saleData = await resSale.json();
 
-      const resRent = await fetch("https://aswan-real-estate.onrender.com/api/properties/rent");
+      const resRent = await fetch("http://localhost:3000/api/properties/rent");
       const rentData = await resRent.json();
 
-      // 👉 Detect property type safely
       const getType = (p) =>
         (p.type || p.propertyType || p.categoryType || "").toLowerCase();
 
-      // 👉 Combine sale + rent by type
       const mergeType = (type) => [
         ...saleData
           .filter((p) => getType(p) === type.toLowerCase())
@@ -43,11 +67,6 @@ const TopPropertiesForSaleRent = () => {
       setTownhouses(mergeType("townhouse"));
       setWarehouses(mergeType("warehouse"));
       setOffices(mergeType("office"));
-
-      console.log("Townhouse:", mergeType("townhouse"));
-      console.log("Warehouse:", mergeType("warehouse"));
-      console.log("Office:", mergeType("office"));
-      
     } catch (error) {
       console.error("Error fetching properties:", error);
     }
@@ -72,34 +91,44 @@ const TopPropertiesForSaleRent = () => {
 
   const sliderSettings = {
     dots: true,
+    arrows: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 3, // Desktop view
     slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1, // Mobile & Tablet view - 1 card
+          slidesToScroll: 1,
+          arrows: true,
+          dots: true,
+        },
+      },
     ],
   };
 
   const tabs = ["Villas", "Apartments", "Townhouse", "Warehouse", "Office"];
 
   return (
-    <section className="bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl font-normal mb-6">
+    <section className="bg-gray-50 py-12 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+        <h2 className="text-2xl sm:text-3xl font-normal mb-6 text-center sm:text-left">
           Top <span className="text-red-600">{activeTab}</span> Properties
         </h2>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 flex-wrap">
+        <div className="flex gap-2 sm:gap-4 mb-8 flex-wrap justify-center sm:justify-start">
           {tabs.map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 rounded-md font-normal ${
+              className={`px-4 py-2 rounded-md font-normal text-sm sm:text-base transition ${
                 activeTab === tab
                   ? "bg-red-600 text-white"
-                  : "bg-white border border-gray-300"
+                  : "bg-white border border-gray-300 hover:bg-gray-100"
               }`}
               onClick={() => setActiveTab(tab)}
             >
@@ -113,26 +142,24 @@ const TopPropertiesForSaleRent = () => {
           {getPropertiesForTab().map((prop) => (
             <div
               key={prop._id || prop.id}
-              className="px-2 cursor-pointer"
+              className="px-2 cursor-pointer flex justify-center"
               onClick={() => handleClick(prop)}
             >
-              <div className="bg-white rounded-lg shadow overflow-hidden hover:scale-105 transform transition duration-300">
+              <div className="bg-white rounded-lg shadow overflow-hidden hover:scale-105 transform transition duration-300 flex flex-col h-full max-w-sm w-full">
                 <img
                   src={prop.images?.[0] || "/assets/placeholder.jpg"}
                   alt={prop.title}
-                  className="w-full h-56 object-cover"
+                  className="w-full h-48 sm:h-56 md:h-60 lg:h-64 object-cover rounded-t-lg"
                 />
-                <div className="p-4">
-                  <h4 className="font-medium">{prop.title}</h4>
-                  <p className="text-red-600 font-medium mt-2">
-                    AED {prop.price}
+                <div className="p-4 flex flex-col justify-between h-full">
+                  <h4 className="font-medium text-sm sm:text-base mb-2">{prop.title}</h4>
+                  <p className="text-red-600 font-medium text-sm sm:text-base">
+                    AED {prop.price.toLocaleString()}
                   </p>
-                  <p className="text-gray-500 text-sm mt-1">
+                  <p className="text-gray-500 text-xs sm:text-sm mt-1">
                     {prop.area} | {prop.location}
                   </p>
-                  <p className="text-gray-400 text-xs mt-1">
-                    {prop.dealType}
-                  </p>
+                  <p className="text-gray-400 text-xs mt-1">{prop.dealType}</p>
                 </div>
               </div>
             </div>
@@ -140,7 +167,7 @@ const TopPropertiesForSaleRent = () => {
         </Slider>
 
         {getPropertiesForTab().length === 0 && (
-          <p className="text-center text-gray-500 mt-4">
+          <p className="text-center text-gray-500 mt-4 text-sm sm:text-base">
             No properties found.
           </p>
         )}

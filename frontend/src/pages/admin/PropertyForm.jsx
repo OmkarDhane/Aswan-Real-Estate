@@ -8,7 +8,7 @@ const PropertyForm = () => {
 
   // Validate type
   if (type !== 'sale' && type !== 'rent') {
-    return <div className="text-center mt-10">Invalid property type</div>;
+    return <div className="text-center mt-10 text-red-500">Invalid property type</div>;
   }
 
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ const PropertyForm = () => {
 
   const fetchProperty = async () => {
     try {
-      const response = await fetch(`https://aswan-real-estate.onrender.com/api/properties/${type}/${id}`);
+      const response = await fetch(`http://localhost:3000/api/properties/${type}/${id}`);
       const data = await response.json();
       setFormData({
         ...data,
@@ -59,8 +59,8 @@ const PropertyForm = () => {
     };
 
     const url = isEditMode
-      ? `https://aswan-real-estate.onrender.com/api/properties/${type}/${id}`
-      : `https://aswan-real-estate.onrender.com/api/properties/${type}`;
+      ? `http://localhost:3000/api/properties/${type}/${id}`
+      : `http://localhost:3000/api/properties/${type}`;
     const method = isEditMode ? 'PUT' : 'POST';
 
     try {
@@ -81,12 +81,12 @@ const PropertyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 font-[Poppins]">
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded shadow">
-        <h2 className="text-2xl font-bold mb-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-8 font-[Poppins]">
+      <div className="max-w-3xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800">
           {isEditMode ? 'Edit Property' : 'Add New Property'} ({type === 'sale' ? 'For Sale' : 'For Rent'})
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-gray-700 mb-1">Title</label>
             <input
@@ -94,12 +94,12 @@ const PropertyForm = () => {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-1">Price (AED)</label>
               <input
@@ -107,7 +107,7 @@ const PropertyForm = () => {
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
                 required
               />
             </div>
@@ -118,13 +118,13 @@ const PropertyForm = () => {
                 name="beds"
                 value={formData.beds}
                 onChange={handleChange}
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
                 required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-1">Type</label>
               <input
@@ -132,8 +132,8 @@ const PropertyForm = () => {
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className="w-full border p-2 rounded"
                 placeholder="e.g. Apartment, Villa, Office"
+                className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
                 required
               />
             </div>
@@ -145,7 +145,7 @@ const PropertyForm = () => {
                 value={formData.area}
                 onChange={handleChange}
                 placeholder="e.g. Downtown, Dubai Marina, JLT, JVC"
-                className="w-full border p-2 rounded"
+                className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
                 required
               />
             </div>
@@ -158,7 +158,7 @@ const PropertyForm = () => {
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
           </div>
@@ -169,9 +169,9 @@ const PropertyForm = () => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full border p-2 rounded h-32"
+              className="w-full border p-2 sm:p-3 rounded h-32 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
-            ></textarea>
+            />
           </div>
 
           <div>
@@ -181,8 +181,8 @@ const PropertyForm = () => {
               name="amenities"
               value={formData.amenities}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
               placeholder="Gym, Pool, Parking"
+              className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
             />
           </div>
 
@@ -192,10 +192,10 @@ const PropertyForm = () => {
               name="images"
               value={formData.images}
               onChange={handleChange}
-              className="w-full border p-2 rounded h-24"
               placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
+              className="w-full border p-2 sm:p-3 rounded h-24 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
-            ></textarea>
+            />
           </div>
 
           <div>
@@ -205,12 +205,12 @@ const PropertyForm = () => {
               name="googleMapLink"
               value={formData.googleMapLink}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
               placeholder="https://www.google.com/maps/embed?..."
+              className="w-full border p-2 sm:p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
             />
           </div>
 
-          <div className="flex justify-end space-x-4 mt-6">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
             <button
               type="button"
               onClick={() => navigate('/admin/dashboard')}
@@ -232,4 +232,3 @@ const PropertyForm = () => {
 };
 
 export default PropertyForm;
-

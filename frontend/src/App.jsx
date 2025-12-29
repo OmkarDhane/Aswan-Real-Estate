@@ -15,6 +15,7 @@ import TopPropertyDetails from "./components/topPropertyDetails";
 import Privacy from "./pages/Privacy";
 import Sitemap from "./pages/Sitemap";
 import Terms from "./pages/Terms";
+import './styles/custom.css';
 import WhyChooseEspace from "./pages/WhyChooseEspace";
 // import OffPlanProperties from "./pages/OffPlanProperties";
 // import OffPlanInfo from "./pages/OffPlanInfo";   
