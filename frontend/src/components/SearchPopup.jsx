@@ -3,82 +3,60 @@ import { useNavigate } from "react-router-dom";
 
 const SearchPopup = ({ onClose }) => {
   const [query, setQuery] = useState("");
-  const [mode, setMode] = useState("rent"); // buy/rent toggle
   const navigate = useNavigate();
 
-  const handleSearch = () => {
-    if (query.trim() !== "") {
-      navigate(
-        mode === "rent"
-          ? `/for-rent?search=${encodeURIComponent(query)}`
-          : `/for-sale?search=${encodeURIComponent(query)}`
-      );
-      onClose();
-    }
+  const executeSearch = (searchMode) => {
+    // जर काही टाईप केले असेल तर सर्च पॅरामीटरसह जा, नाहीतर डायरेक्ट पेजवर जा
+    const path = searchMode === "rent" ? "/for-rent" : "/for-sale";
+    const finalUrl = query.trim() 
+      ? `${path}?search=${encodeURIComponent(query.trim())}` 
+      : path;
+      
+    navigate(finalUrl);
+    onClose();
   };
 
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-80 p-4 sm:p-8"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/90 p-4 backdrop-blur-sm"
     >
-      {/* INNER BOX */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="mt-20 w-full sm:w-4/5 md:w-3/5 lg:w-2/5 p-6 sm:p-8 bg-gray-900 rounded-xl shadow-lg"
+        className="mt-20 w-full max-w-lg p-6 bg-gray-900 rounded-xl shadow-2xl border border-gray-800"
       >
-        {/* TOP CLOSE BUTTON */}
-        <div className="flex justify-end mb-6">
-          <button
-            onClick={onClose}
-            className="text-white text-2xl sm:text-3xl font-light"
-            aria-label="Close"
-          >
-            ×
-          </button>
+        <div className="flex justify-end mb-4">
+          <button onClick={onClose} className="text-gray-400 hover:text-white text-3xl">×</button>
         </div>
 
-        {/* TITLE */}
-        <h2 className="text-xl sm:text-2xl font-semibold text-white mb-6 text-center">
-          Property Search
-        </h2>
+        <h2 className="text-xl font-bold text-white mb-6 text-center uppercase">Property Search</h2>
 
-        {/* SEARCH BAR */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-2 w-full">
+        <div className="flex flex-col gap-4">
           <input
             type="text"
-            placeholder="Area or Community"
+            placeholder="Search by Property Name or Area..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-gray-800 text-white placeholder-gray-400 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            autoFocus
+            className="w-full bg-gray-800 text-white px-5 py-4 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-gray-700"
             onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
+              if (e.key === "Enter") executeSearch("sale"); 
             }}
           />
 
-          <div className="flex gap-2 sm:gap-4 justify-center">
+          <div className="grid grid-cols-2 gap-4">
             <button
-              onClick={() => {
-                setMode("buy");
-                handleSearch();
-              }}
-              className={`px-4 py-2 rounded-md font-medium transition ${
-                mode === "buy" ? "bg-red-600 text-white" : "bg-gray-700 text-gray-200 hover:bg-red-500"
-              }`}
+              onClick={() => executeSearch("sale")}
+              className="bg-white text-black py-4 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all uppercase"
             >
-              Buy
+              Search Buy
             </button>
 
             <button
-              onClick={() => {
-                setMode("rent");
-                handleSearch();
-              }}
-              className={`px-4 py-2 rounded-md font-medium transition ${
-                mode === "rent" ? "bg-red-600 text-white" : "bg-gray-700 text-gray-200 hover:bg-red-500"
-              }`}
+              onClick={() => executeSearch("rent")}
+              className="bg-red-600 text-white py-4 rounded-lg font-bold hover:bg-black transition-all uppercase"
             >
-              Rent
+              Search Rent
             </button>
           </div>
         </div>

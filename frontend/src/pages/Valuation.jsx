@@ -113,11 +113,11 @@ const Valuation = () => {
               </div>
 
               <div className="flex items-center mt-6 space-x-3">
-                <img
+                {/* <img
                   src="/assets/google-reviews.png"
                   alt="Google Reviews"
                   className="h-7 sm:h-8"
-                />
+                /> */}
                 <span className="text-gray-900 text-xs sm:text-sm font-medium">
                   Rated 4.7/5 from 1047+ Customer Reviews
                 </span>

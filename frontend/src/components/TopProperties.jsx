@@ -6,6 +6,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+const API_URL = "http://localhost:1337";
+
 const SampleNextArrow = (props) => {
   const { className, style, onClick } = props;
   return (
@@ -44,15 +46,21 @@ const TopPropertiesForSaleRent = () => {
 
   const fetchProperties = async () => {
     try {
-      const resSale = await fetch("http://localhost:3000/api/properties/sale");
-      const saleData = await resSale.json();
+      // Strapi कडून Sale आणि Rent दोन्ही डेटा एकाच वेळी मिळवणे
+      const [resSale, resRent] = await Promise.all([
+        fetch(`${API_URL}/api/properties?filters[category][$eq]=sale&populate=*`),
+        fetch(`${API_URL}/api/properties?filters[category][$eq]=rent&populate=*`)
+      ]);
 
-      const resRent = await fetch("http://localhost:3000/api/properties/rent");
-      const rentData = await resRent.json();
+      const saleJson = await resSale.json();
+      const rentJson = await resRent.json();
 
-      const getType = (p) =>
-        (p.type || p.propertyType || p.categoryType || "").toLowerCase();
+      const saleData = saleJson.data || [];
+      const rentData = rentJson.data || [];
 
+      const getType = (p) => (p.type || "").toLowerCase();
+
+      // डेटा फिल्टर आणि मर्ज करण्याचे फंक्शन
       const mergeType = (type) => [
         ...saleData
           .filter((p) => getType(p) === type.toLowerCase())
@@ -73,10 +81,11 @@ const TopPropertiesForSaleRent = () => {
   };
 
   const handleClick = (property) => {
+    // Strapi documentId वापरून नेव्हिगेशन
     navigate(
       property.dealType === "Sale"
-        ? `/property-info-sale/${property._id || property.id}`
-        : `/property-info-rent/${property._id || property.id}`
+        ? `/property-info-sale/${property.documentId}`
+        : `/property-info-rent/${property.documentId}`
     );
   };
 
@@ -92,9 +101,9 @@ const TopPropertiesForSaleRent = () => {
   const sliderSettings = {
     dots: true,
     arrows: true,
-    infinite: true,
+    infinite: getPropertiesForTab().length > 3, // ३ पेक्षा कमी आयटम असतील तर इनफिनिट बंद राहील
     speed: 500,
-    slidesToShow: 3, // Desktop view
+    slidesToShow: 3,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -102,7 +111,7 @@ const TopPropertiesForSaleRent = () => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 1, // Mobile & Tablet view - 1 card
+          slidesToShow: 1,
           slidesToScroll: 1,
           arrows: true,
           dots: true,
@@ -139,36 +148,50 @@ const TopPropertiesForSaleRent = () => {
 
         {/* Slider */}
         <Slider {...sliderSettings}>
-          {getPropertiesForTab().map((prop) => (
-            <div
-              key={prop._id || prop.id}
-              className="px-2 cursor-pointer flex justify-center"
-              onClick={() => handleClick(prop)}
-            >
-              <div className="bg-white rounded-lg shadow overflow-hidden hover:scale-105 transform transition duration-300 flex flex-col h-full max-w-sm w-full">
-                <img
-                  src={prop.images?.[0] || "/assets/placeholder.jpg"}
-                  alt={prop.title}
-                  className="w-full h-48 sm:h-56 md:h-60 lg:h-64 object-cover rounded-t-lg"
-                />
-                <div className="p-4 flex flex-col justify-between h-full">
-                  <h4 className="font-medium text-sm sm:text-base mb-2">{prop.title}</h4>
-                  <p className="text-red-600 font-medium text-sm sm:text-base">
-                    AED {prop.price.toLocaleString()}
-                  </p>
-                  <p className="text-gray-500 text-xs sm:text-sm mt-1">
-                    {prop.area} | {prop.location}
-                  </p>
-                  <p className="text-gray-400 text-xs mt-1">{prop.dealType}</p>
+          {getPropertiesForTab().map((prop) => {
+            // Strapi इमेज पाथ सेटअप
+            const imageUrl = prop.images?.[0]?.url 
+              ? `${API_URL}${prop.images[0].url}` 
+              : "/assets/placeholder.jpg";
+
+            return (
+              <div
+                key={prop.documentId}
+                className="px-2 cursor-pointer outline-none"
+                onClick={() => handleClick(prop)}
+              >
+                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transform transition duration-300 flex flex-col h-[450px] w-full border border-gray-100 mb-4 mt-2">
+                  <img
+                    src={imageUrl}
+                    alt={prop.title}
+                    className="w-full h-56 sm:h-64 object-cover"
+                  />
+                  <div className="p-5 flex flex-col justify-between flex-grow">
+                    <div>
+                      <h4 className="font-semibold text-lg mb-2 uppercase line-clamp-1">{prop.title}</h4>
+                      <p className="text-red-600 font-bold text-lg">
+                        AED {prop.price?.toLocaleString()}
+                      </p>
+                      <p className="text-gray-500 text-sm mt-2 line-clamp-1">
+                        {prop.area} | {prop.location}
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center mt-4 border-t pt-3">
+                       <span className={`text-xs font-bold px-2 py-1 rounded uppercase ${prop.dealType === 'Sale' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'}`}>
+                         For {prop.dealType}
+                       </span>
+                       <span className="text-gray-400 text-xs">View Details →</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </Slider>
 
         {getPropertiesForTab().length === 0 && (
-          <p className="text-center text-gray-500 mt-4 text-sm sm:text-base">
-            No properties found.
+          <p className="text-center text-gray-500 mt-10 text-sm sm:text-base border-2 border-dashed py-10 rounded-lg">
+            No {activeTab} properties found currently.
           </p>
         )}
       </div>

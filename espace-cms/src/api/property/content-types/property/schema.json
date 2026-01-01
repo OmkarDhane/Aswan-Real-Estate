@@ -1,0 +1,71 @@
+{
+  "kind": "collectionType",
+  "collectionName": "properties",
+  "info": {
+    "singularName": "property",
+    "pluralName": "properties",
+    "displayName": "property"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "price": {
+      "type": "float"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "beds": {
+      "type": "integer"
+    },
+    "type": {
+      "type": "string"
+    },
+    "area": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "option:",
+        "sale",
+        "rent"
+      ]
+    },
+    "stats": {
+      "type": "enumeration",
+      "enum": [
+        "option:",
+        "available",
+        "sold"
+      ]
+    },
+    "amenties": {
+      "type": "string",
+      "default": "✔",
+      "required": false,
+      "unique": false
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "googleMapLink": {
+      "type": "string"
+    }
+  }
+}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+const API_URL = "http://localhost:1337"; // Strapi URL
+
 const Hero = () => {
   const navigate = useNavigate();
   const [sale, setSale] = useState([]);
@@ -15,10 +17,11 @@ const Hero = () => {
 
   const fetchSale = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/properties/sale");
-      const data = await res.json();
-      const mappedData = data.map((item) => ({ ...item, type: "Buy" }));
-      setSale(mappedData.slice(0, 2));
+      // Strapi कडून 'sale' डेटा मिळवणे
+      const res = await fetch(`${API_URL}/api/properties?filters[category][$eq]=sale&populate=*`);
+      const json = await res.json();
+      const mappedData = (json.data || []).map((item) => ({ ...item, type: "Buy" }));
+      setSale(mappedData.slice(0, 2)); // फक्त २ डेटा
     } catch (error) {
       console.error("Error fetching sale properties:", error);
     }
@@ -26,10 +29,11 @@ const Hero = () => {
 
   const fetchRent = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/properties/rent");
-      const data = await res.json();
-      const mappedData = data.map((item) => ({ ...item, type: "Rent" }));
-      setRent(mappedData.slice(0, 2));
+      // Strapi कडून 'rent' डेटा मिळवणे
+      const res = await fetch(`${API_URL}/api/properties?filters[category][$eq]=rent&populate=*`);
+      const json = await res.json();
+      const mappedData = (json.data || []).map((item) => ({ ...item, type: "Rent" }));
+      setRent(mappedData.slice(0, 2)); // फक्त २ डेटा
     } catch (error) {
       console.error("Error fetching rent properties:", error);
     }
@@ -50,10 +54,11 @@ const Hero = () => {
   };
 
   const handleClick = (property) => {
+    // Strapi documentId वापरून नेव्हिगेशन
     if (property.type === "Buy") {
-      navigate(`/property-info-sale/${property._id || property.id}`);
+      navigate(`/property-info-sale/${property.documentId}`);
     } else {
-      navigate(`/property-info-rent/${property._id || property.id}`);
+      navigate(`/property-info-rent/${property.documentId}`);
     }
   };
 
@@ -114,22 +119,29 @@ const Hero = () => {
 
           {/* Property Thumbnails */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {propertiesToShow().map((property) => (
-              <div
-                key={property._id || property.id}
-                className="relative w-full h-48 sm:h-52 rounded-md overflow-hidden shadow-lg cursor-pointer transform transition duration-300 hover:scale-105"
-                onClick={() => handleClick(property)}
-              >
-                <img
-                  src={property.images?.[0] || "/assets/placeholder.jpg"}
-                  alt={property.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity p-2">
-                  <p className="text-white text-sm font-semibold text-center">{property.title}</p>
+            {propertiesToShow().map((property) => {
+              // Strapi इमेज URL सेटअप
+              const imageUrl = property.images?.[0]?.url 
+                ? `${API_URL}${property.images[0].url}` 
+                : "/assets/placeholder.jpg";
+
+              return (
+                <div
+                  key={property.documentId}
+                  className="relative w-full h-48 sm:h-52 rounded-md overflow-hidden shadow-lg cursor-pointer transform transition duration-300 hover:scale-105"
+                  onClick={() => handleClick(property)}
+                >
+                  <img
+                    src={imageUrl}
+                    alt={property.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity p-2">
+                    <p className="text-white text-sm font-semibold text-center uppercase">{property.title}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             {propertiesToShow().length === 0 && (
               <p className="text-center text-gray-500 col-span-1 sm:col-span-2">No properties found.</p>
@@ -138,7 +150,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Fade-in animation */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }

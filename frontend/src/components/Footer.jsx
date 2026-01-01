@@ -113,7 +113,7 @@ const Footer = () => {
 
         {/* DESIGN CREDIT */}
         <div className="text-gray-600 text-xs sm:text-sm text-center sm:text-right">
-          © {new Date().getFullYear()} Aswan Real Estate • Designed by <span className="text-red-600 font-semibold">ActalDigital</span>
+          © {new Date().getFullYear()} Aswan Real Estate • Designed by <a href="https://actaldigital.com" className="text-red-600 font-semibold">ActalDigital</a>
         </div>
       </div>
     </footer>

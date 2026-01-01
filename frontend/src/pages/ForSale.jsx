@@ -1,21 +1,39 @@
 import { useEffect, useState } from "react";
-import { FaEnvelope, FaPhone, FaWhatsapp } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaEnvelope, FaPhone, FaWhatsapp, FaTimes } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
+
+const API_URL = "http://localhost:1337";
+
+// डेटामधून युनिक व्हॅल्यू काढण्यासाठी हेल्पर फंक्शन
+const getUniqueValues = (items, key) => {
+  const values = items
+    .map((item) => item[key])
+    .filter((val) => val && val !== "");
+  return ["All", ...Array.from(new Set(values))];
+};
 
 const ForSale = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+
+  // डायनॅमिक लिस्टसाठी स्टेट्स
+  const [areas, setAreas] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [bedsList, setBedsList] = useState([]);
+
   const [filters, setFilters] = useState({
     area: "All",
     type: "All",
     minPrice: "",
     maxPrice: "",
-    minBeds: "",
+    minBeds: "All", // हे 'All' केले आहे
   });
 
   const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [showCallPopup, setShowCallPopup] = useState(false);
+  const [selectedProp, setSelectedProp] = useState("");
 
   useEffect(() => {
     fetchProperties();
@@ -23,12 +41,21 @@ const ForSale = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/properties/sale");
-      const data = await response.json();
+      const res = await fetch(
+        `${API_URL}/api/properties?filters[category][$eq]=sale&populate=*`
+      );
+      const json = await res.json();
+      const data = json.data || [];
       setProperties(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching properties:", error);
+      
+      // फिल्टर्ससाठी युनिक व्हॅल्यू सेट करणे
+      setAreas(getUniqueValues(data, "area"));
+      setTypes(getUniqueValues(data, "type"));
+      setBedsList(getUniqueValues(data, "beds"));
+      
+    } catch (err) {
+      console.error("Error fetching properties:", err);
+    } finally {
       setLoading(false);
     }
   };
@@ -39,220 +66,142 @@ const ForSale = () => {
   };
 
   const filteredProperties = properties.filter((property) => {
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get("search")?.toLowerCase() || "";
+
+    const matchSearch =
+      searchTerm === "" ||
+      property.title?.toLowerCase().includes(searchTerm) ||
+      property.location?.toLowerCase().includes(searchTerm) ||
+      property.area?.toLowerCase().includes(searchTerm);
+
     const matchArea =
       filters.area === "All" ||
-      property.area.includes(filters.area) ||
-      property.location.includes(filters.area);
-    const matchType = filters.type === "All" || property.type.includes(filters.type);
-    const matchMinPrice = !filters.minPrice || property.price >= parseInt(filters.minPrice);
-    const matchMaxPrice = !filters.maxPrice || property.price <= parseInt(filters.maxPrice);
-    const matchMinBeds = !filters.minBeds || property.beds >= parseInt(filters.minBeds);
+      property.area === filters.area ||
+      property.location === filters.area;
+      
+    const matchType =
+      filters.type === "All" || property.type === filters.type;
+      
+    const matchMinPrice =
+      !filters.minPrice || property.price >= Number(filters.minPrice);
+      
+    const matchMaxPrice =
+      !filters.maxPrice || property.price <= Number(filters.maxPrice);
+      
+    const matchMinBeds =
+      filters.minBeds === "All" || property.beds >= Number(filters.minBeds);
 
-    return matchArea && matchType && matchMinPrice && matchMaxPrice && matchMinBeds;
+    return matchSearch && matchArea && matchType && matchMinPrice && matchMaxPrice && matchMinBeds;
   });
 
-  if (loading) return <div className="text-center py-20">Loading...</div>;
+  if (loading) return <div className="text-center py-20 font-[Poppins]">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 font-[Poppins]">
+    <div className="min-h-screen bg-gray-50 py-10 px-4 font-[Poppins]">
       <div className="max-w-7xl mx-auto">
-        {/* Title */}
-        <h1 className="text-3xl sm:text-4xl font-normal mb-6 text-black">
+        <h1 className="text-3xl sm:text-4xl mb-6">
           Looking for a property in Dubai? Start your property search.
         </h1>
 
-        {/* Filters */}
+        {/* Filters UI - आता हे Rent सारखे Dynamic झाले आहे */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
-          <select
-            name="area"
-            value={filters.area}
-            onChange={handleFilterChange}
-            className="border rounded px-3 py-2 w-full"
-          >
-            <option value="All">All Areas</option>
-            <option value="Downtown">Downtown</option>
-            <option value="Dubai Marina">Dubai Marina</option>
-            <option value="JLT">JLT</option>
-            <option value="JVC">JVC</option>
+          <select name="area" value={filters.area} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600">
+            {areas.map((a) => <option key={a} value={a}>{a === "All" ? "All Areas" : a}</option>)}
           </select>
 
-          <select
-            name="type"
-            value={filters.type}
-            onChange={handleFilterChange}
-            className="border rounded px-3 py-2 w-full"
-          >
-            <option value="All">All Types</option>
-            <option value="Apartment">Apartment</option>
-            <option value="Villa">Villa</option>
-            <option value="Office">Office</option>
+          <select name="type" value={filters.type} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600">
+            {types.map((t) => <option key={t} value={t}>{t === "All" ? "All Types" : t}</option>)}
           </select>
 
-          <input
-            type="number"
-            name="minPrice"
-            placeholder="Min Price"
-            value={filters.minPrice}
-            onChange={handleFilterChange}
-            className="border rounded px-3 py-2 w-full"
-          />
-
-          <input
-            type="number"
-            name="maxPrice"
-            placeholder="Max Price"
-            value={filters.maxPrice}
-            onChange={handleFilterChange}
-            className="border rounded px-3 py-2 w-full"
-          />
-
-          <input
-            type="number"
-            name="minBeds"
-            placeholder="Min Beds"
-            value={filters.minBeds}
-            onChange={handleFilterChange}
-            className="border rounded px-3 py-2 w-full"
-          />
+          <input type="number" name="minPrice" placeholder="Min Price" value={filters.minPrice} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none" />
+          <input type="number" name="maxPrice" placeholder="Max Price" value={filters.maxPrice} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none" />
+          
+          <select name="minBeds" value={filters.minBeds} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600">
+            {bedsList.sort().map((b) => (
+              <option key={b} value={b}>{b === "All" ? "All Beds" : `${b} Beds`}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Property List */}
+        {/* Properties List */}
         <div className="space-y-6">
-          {filteredProperties.map((property) => (
-            <div
-              key={property._id}
-              className="bg-white rounded-lg shadow flex flex-col sm:flex-row overflow-hidden hover:shadow-lg transition"
-            >
-              {/* Image */}
-              <Link
-                to={`/property-info-sale/${property._id}`}
-                className="w-full sm:w-1/2 block"
-              >
-                <img
-                  src={property.images[0] || "/assets/placeholder.jpg"}
-                  className="h-64 sm:h-80 w-full object-cover rounded-lg"
-                  alt={property.title}
-                />
-              </Link>
+          {filteredProperties.length > 0 ? (
+            filteredProperties.map((property) => {
+              const mainImage = property.images?.[0]?.url 
+                ? `${API_URL}${property.images[0].url}` 
+                : "/assets/placeholder.jpg";
+              const descriptionText = property.description?.[0]?.children?.[0]?.text || "";
 
-              <div className="w-full sm:w-1/2 p-4 sm:p-6 flex flex-col justify-between">
-                {/* Title */}
-                <Link to={`/property-info-sale/${property._id}`}>
-                  <h3 className="text-xl sm:text-2xl mb-2 transition-colors duration-300 hover:text-red-600 cursor-pointer">
-                    {property.title}
-                  </h3>
-                </Link>
+              return (
+                <div key={property.documentId} className="bg-white rounded-lg shadow flex flex-col sm:flex-row overflow-hidden hover:shadow-md transition-shadow border border-gray-100">
+                  <Link to={`/property-info-sale/${property.documentId}`} className="w-full sm:w-1/2">
+                    <img src={mainImage} alt={property.title} className="h-64 sm:h-80 w-full object-cover" />
+                  </Link>
 
-                <p className="text-red-600 text-lg sm:text-xl mb-2">
-                  AED {property.price.toLocaleString()}
-                </p>
-                <p className="text-gray-700 mb-2 line-clamp-2">{property.description}</p>
+                  <div className="w-full sm:w-1/2 p-6 flex flex-col justify-between">
+                    <div>
+                      <Link to={`/property-info-sale/${property.documentId}`}>
+                        <h3 className="text-2xl mb-2 hover:text-red-600 uppercase font-normal tracking-tight">
+                          {property.title}
+                        </h3>
+                      </Link>
+                      <p className="text-red-600 text-xl mb-2">
+                        AED {property.price?.toLocaleString()}
+                      </p>
+                      <p className="text-gray-700 mb-2 line-clamp-2 text-sm">{descriptionText}</p>
+                      <div className="text-gray-500 text-sm">
+                        <p>{property.beds} Beds | {property.type}</p>
+                        <p className="uppercase mt-1">{property.area} | {property.location}</p>
+                      </div>
+                    </div>
 
-                <p className="text-gray-500">{property.beds} Beds | {property.type}</p>
-                <p className="text-gray-500">{property.area} | {property.location}</p>
-
-                {/* Contact Buttons */}
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 mt-4">
-                  <button
-                    onClick={() => setShowCallPopup(true)}
-                    className="flex items-center justify-center space-x-2 bg-white text-black border px-7 py-3 rounded hover:bg-red-600 hover:text-white w-full sm:w-auto"
-                  >
-                    <FaPhone /> <span>Call</span>
-                  </button>
-
-                  <button
-                    onClick={() => setShowEmailPopup(true)}
-                    className="flex items-center justify-center space-x-2 bg-white text-black border px-7 py-3 rounded hover:bg-red-600 hover:text-white w-full sm:w-auto"
-                  >
-                    <FaEnvelope /> <span>Email</span>
-                  </button>
-
-                  <a
-                    href="https://wa.me/911234567890"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-center space-x-2 bg-white text-black border px-7 py-3 rounded hover:bg-red-600 hover:text-white w-full sm:w-auto"
-                  >
-                    <FaWhatsapp /> <span>WhatsApp</span>
-                  </a>
+                    <div className="flex flex-wrap gap-3 mt-4">
+                      <button onClick={() => setShowCallPopup(true)} className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition-all"><FaPhone /> Call</button>
+                      <button onClick={() => { setShowEmailPopup(true); setSelectedProp(property.title); }} className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition-all"><FaEnvelope /> Email</button>
+                      <a href="https://wa.me/911234567890" target="_blank" rel="noreferrer" className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-green-600 hover:text-white transition-all"><FaWhatsapp /> WhatsApp</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              );
+            })
+          ) : (
+            <div className="text-center py-20 text-gray-500 bg-white rounded-lg border">
+              No properties found matching your criteria.
             </div>
-          ))}
-
-          {filteredProperties.length === 0 && (
-            <p className="text-center text-gray-500 mt-10">No properties found.</p>
           )}
         </div>
       </div>
 
-      {/* Call Popup */}
+      {/* Popups */}
       {showCallPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
-          <div className="w-full max-w-md bg-white p-6 rounded-lg text-center">
-            <h2 className="text-xl mb-4">Call Us</h2>
-            <p className="text-gray-700">📞 +91 12345 67890</p>
-            <button
-              onClick={() => setShowCallPopup(false)}
-              className="mt-4 bg-red-600 text-white px-6 py-2 rounded w-full"
-            >
-              Close
-            </button>
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-xs p-8 text-center relative rounded shadow-xl">
+            <button onClick={() => setShowCallPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"><FaTimes /></button>
+            <FaPhone className="text-red-600 text-4xl mx-auto mb-4" />
+            <h2 className="text-xl font-bold mb-2 uppercase">Contact Us</h2>
+            <p className="text-gray-600 mb-6 font-semibold">+91 123 456 7890</p>
+            <a href="tel:+911234567890" className="inline-block w-full bg-red-600 text-white py-3 font-bold rounded uppercase hover:bg-black transition-colors">Call Now</a>
           </div>
         </div>
       )}
 
-      {/* Email Popup */}
       {showEmailPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
-          <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl mb-4 text-center font-semibold">Send Email</h2>
-            <form
-              action="https://formspree.io/f/xdkqzdbk"
-              method="POST"
-              className="space-y-4"
-            >
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                required
-                className="w-full border px-3 py-2 rounded"
-              />
-
-              <input
-                type="email"
-                name="email"
-                placeholder="Email Address"
-                required
-                className="w-full border px-3 py-2 rounded"
-              />
-
-              <textarea
-                name="message"
-                placeholder="Message"
-                required
-                className="w-full border px-3 py-2 rounded h-28"
-              ></textarea>
-
-              <button
-                type="submit"
-                className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700"
-              >
-                Send Message
-              </button>
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md p-6 rounded relative shadow-xl">
+            <button onClick={() => setShowEmailPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"><FaTimes /></button>
+            <h2 className="text-xl font-bold mb-4 uppercase">Inquiry for {selectedProp}</h2>
+            <form action="https://formspree.io/f/xdkqzdbk" method="POST" className="space-y-4">
+              <input type="hidden" name="Property" value={selectedProp} />
+              <input className="w-full border p-3 rounded outline-none" name="name" placeholder="Full Name" required />
+              <input className="w-full border p-3 rounded outline-none" type="email" name="email" placeholder="Email" required />
+              <textarea className="w-full border p-3 rounded outline-none" name="message" rows="4" placeholder="Your Message" required />
+              <button className="w-full bg-red-600 text-white py-3 font-bold uppercase rounded hover:bg-black transition-all">Submit Inquiry</button>
             </form>
-            <button
-              onClick={() => setShowEmailPopup(false)}
-              className="w-full mt-3 bg-gray-300 py-2 rounded"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
-
-      
+     
     </div>
   );
 };
