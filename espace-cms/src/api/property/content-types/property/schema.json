@@ -14,45 +14,33 @@
     "title": {
       "type": "string"
     },
-    "price": {
-      "type": "float"
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "For Sale",
+        "For Rent"
+      ]
     },
     "description": {
       "type": "blocks"
     },
-    "beds": {
-      "type": "integer"
-    },
-    "type": {
-      "type": "string"
-    },
-    "area": {
-      "type": "string"
-    },
     "location": {
       "type": "string"
     },
-    "category": {
-      "type": "enumeration",
-      "enum": [
-        "option:",
-        "sale",
-        "rent"
-      ]
+    "price": {
+      "type": "decimal"
     },
-    "stats": {
-      "type": "enumeration",
-      "enum": [
-        "option:",
-        "available",
-        "sold"
-      ]
+    "beds": {
+      "type": "integer"
+    },
+    "size": {
+      "type": "string"
     },
     "amenties": {
-      "type": "string",
-      "default": "✔",
-      "required": false,
-      "unique": false
+      "type": "blocks"
+    },
+    "map": {
+      "type": "string"
     },
     "images": {
       "type": "media",
@@ -63,9 +51,6 @@
         "videos",
         "audios"
       ]
-    },
-    "googleMapLink": {
-      "type": "string"
     }
   }
 }

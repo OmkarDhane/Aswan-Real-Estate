@@ -9,7 +9,6 @@
     "deploy": "strapi deploy",
     "dev": "strapi develop",
     "develop": "strapi develop",
-    "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
@@ -20,8 +19,7 @@
     "@strapi/plugin-users-permissions": "5.33.1",
     "@strapi/strapi": "5.33.1",
     "better-sqlite3": "12.4.1",
-    "fs-extra": "^10.0.0",
-    "mime-types": "^2.1.27",
+    "pg": "^8.16.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
@@ -38,7 +36,7 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "83030097-addf-4801-9987-dadbe1102d4e",
-    "installId": "426979dbc6fa8a2952b63b7b2b128e532e18ce2c345ed7cfcbf8db6324f339c0"
+    "uuid": "98deedc8-d56e-4c17-acf5-4cef30be0fed",
+    "installId": "aa1dec35e47a4eb82721990ce8726c7e722401989e4e4af3b7e2254e963aafe7"
   }
 }
