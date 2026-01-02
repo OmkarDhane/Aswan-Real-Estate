@@ -18,7 +18,9 @@ const Hero = () => {
   const fetchSale = async () => {
     try {
       // Strapi कडून 'sale' डेटा मिळवणे
-      const res = await fetch(`${API_URL}/api/properties?filters[category][$eq]=sale&populate=*`);
+      const res = await fetch(
+        `${API_URL}/api/properties?filters[type][$eq]=For Sale&populate=*`
+      );
       const json = await res.json();
       const mappedData = (json.data || []).map((item) => ({ ...item, type: "Buy" }));
       setSale(mappedData.slice(0, 2)); // फक्त २ डेटा
@@ -30,7 +32,7 @@ const Hero = () => {
   const fetchRent = async () => {
     try {
       // Strapi कडून 'rent' डेटा मिळवणे
-      const res = await fetch(`${API_URL}/api/properties?filters[category][$eq]=rent&populate=*`);
+      const res = await fetch(`${API_URL}/api/properties?filters[type][$eq]=For Rent&populate=*`);
       const json = await res.json();
       const mappedData = (json.data || []).map((item) => ({ ...item, type: "Rent" }));
       setRent(mappedData.slice(0, 2)); // फक्त २ डेटा

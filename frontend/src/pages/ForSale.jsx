@@ -3,9 +3,9 @@ import { FaEnvelope, FaPhone, FaWhatsapp, FaTimes } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
+// Render वर गेल्यावर ही URL तुमच्या Live URL ने बदला
 const API_URL = "http://localhost:1337";
 
-// डेटामधून युनिक व्हॅल्यू काढण्यासाठी हेल्पर फंक्शन
 const getUniqueValues = (items, key) => {
   const values = items
     .map((item) => item[key])
@@ -18,7 +18,6 @@ const ForSale = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  // डायनॅमिक लिस्टसाठी स्टेट्स
   const [areas, setAreas] = useState([]);
   const [types, setTypes] = useState([]);
   const [bedsList, setBedsList] = useState([]);
@@ -28,7 +27,7 @@ const ForSale = () => {
     type: "All",
     minPrice: "",
     maxPrice: "",
-    minBeds: "All", // हे 'All' केले आहे
+    minBeds: "All",
   });
 
   const [showEmailPopup, setShowEmailPopup] = useState(false);
@@ -41,14 +40,14 @@ const ForSale = () => {
 
   const fetchProperties = async () => {
     try {
+      // इथे लिंक अपडेट केली आहे: filters[type][$eq]=For Sale
       const res = await fetch(
-        `${API_URL}/api/properties?filters[category][$eq]=sale&populate=*`
+        `${API_URL}/api/properties?filters[type][$eq]=For Sale&populate=*`
       );
       const json = await res.json();
       const data = json.data || [];
       setProperties(data);
       
-      // फिल्टर्ससाठी युनिक व्हॅल्यू सेट करणे
       setAreas(getUniqueValues(data, "area"));
       setTypes(getUniqueValues(data, "type"));
       setBedsList(getUniqueValues(data, "beds"));
@@ -75,22 +74,11 @@ const ForSale = () => {
       property.location?.toLowerCase().includes(searchTerm) ||
       property.area?.toLowerCase().includes(searchTerm);
 
-    const matchArea =
-      filters.area === "All" ||
-      property.area === filters.area ||
-      property.location === filters.area;
-      
-    const matchType =
-      filters.type === "All" || property.type === filters.type;
-      
-    const matchMinPrice =
-      !filters.minPrice || property.price >= Number(filters.minPrice);
-      
-    const matchMaxPrice =
-      !filters.maxPrice || property.price <= Number(filters.maxPrice);
-      
-    const matchMinBeds =
-      filters.minBeds === "All" || property.beds >= Number(filters.minBeds);
+    const matchArea = filters.area === "All" || property.area === filters.area || property.location === filters.area;
+    const matchType = filters.type === "All" || property.type === filters.type;
+    const matchMinPrice = !filters.minPrice || property.price >= Number(filters.minPrice);
+    const matchMaxPrice = !filters.maxPrice || property.price <= Number(filters.maxPrice);
+    const matchMinBeds = filters.minBeds === "All" || property.beds >= Number(filters.minBeds);
 
     return matchSearch && matchArea && matchType && matchMinPrice && matchMaxPrice && matchMinBeds;
   });
@@ -104,19 +92,15 @@ const ForSale = () => {
           Looking for a property in Dubai? Start your property search.
         </h1>
 
-        {/* Filters UI - आता हे Rent सारखे Dynamic झाले आहे */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           <select name="area" value={filters.area} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600">
             {areas.map((a) => <option key={a} value={a}>{a === "All" ? "All Areas" : a}</option>)}
           </select>
-
           <select name="type" value={filters.type} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600">
             {types.map((t) => <option key={t} value={t}>{t === "All" ? "All Types" : t}</option>)}
           </select>
-
           <input type="number" name="minPrice" placeholder="Min Price" value={filters.minPrice} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none" />
           <input type="number" name="maxPrice" placeholder="Max Price" value={filters.maxPrice} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none" />
-          
           <select name="minBeds" value={filters.minBeds} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600">
             {bedsList.sort().map((b) => (
               <option key={b} value={b}>{b === "All" ? "All Beds" : `${b} Beds`}</option>
@@ -124,7 +108,6 @@ const ForSale = () => {
           </select>
         </div>
 
-        {/* Properties List */}
         <div className="space-y-6">
           {filteredProperties.length > 0 ? (
             filteredProperties.map((property) => {
@@ -142,13 +125,9 @@ const ForSale = () => {
                   <div className="w-full sm:w-1/2 p-6 flex flex-col justify-between">
                     <div>
                       <Link to={`/property-info-sale/${property.documentId}`}>
-                        <h3 className="text-2xl mb-2 hover:text-red-600 uppercase font-normal tracking-tight">
-                          {property.title}
-                        </h3>
+                        <h3 className="text-2xl mb-2 hover:text-red-600 uppercase font-normal tracking-tight">{property.title}</h3>
                       </Link>
-                      <p className="text-red-600 text-xl mb-2">
-                        AED {property.price?.toLocaleString()}
-                      </p>
+                      <p className="text-red-600 text-xl mb-2">AED {property.price?.toLocaleString()}</p>
                       <p className="text-gray-700 mb-2 line-clamp-2 text-sm">{descriptionText}</p>
                       <div className="text-gray-500 text-sm">
                         <p>{property.beds} Beds | {property.type}</p>
@@ -166,14 +145,12 @@ const ForSale = () => {
               );
             })
           ) : (
-            <div className="text-center py-20 text-gray-500 bg-white rounded-lg border">
-              No properties found matching your criteria.
-            </div>
+            <div className="text-center py-20 text-gray-500 bg-white rounded-lg border">No properties found matching your criteria.</div>
           )}
         </div>
       </div>
 
-      {/* Popups */}
+      {/* Popups (Same as before) */}
       {showCallPopup && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-xs p-8 text-center relative rounded shadow-xl">
@@ -201,7 +178,6 @@ const ForSale = () => {
           </div>
         </div>
       )}
-     
     </div>
   );
 };

@@ -33,7 +33,7 @@
     "beds": {
       "type": "integer"
     },
-    "size": {
+    "area": {
       "type": "string"
     },
     "amenties": {
@@ -50,6 +50,16 @@
         "files",
         "videos",
         "audios"
+      ]
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "villa",
+        "apartment",
+        "townhouse",
+        "warehouse",
+        "office"
       ]
     }
   }
