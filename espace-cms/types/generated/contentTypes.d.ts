@@ -479,7 +479,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
   };
   attributes: {
     amenties: Schema.Attribute.Blocks;
-    area: Schema.Attribute.String;
+    area: Schema.Attribute.Text;
     beds: Schema.Attribute.Integer;
     category: Schema.Attribute.Enumeration<
       ['villa', 'apartment', 'townhouse', 'warehouse', 'office']
@@ -498,8 +498,8 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
       'api::property.property'
     > &
       Schema.Attribute.Private;
-    location: Schema.Attribute.String;
-    map: Schema.Attribute.String;
+    location: Schema.Attribute.Text;
+    map: Schema.Attribute.Text;
     price: Schema.Attribute.Decimal;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
