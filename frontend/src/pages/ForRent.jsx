@@ -3,7 +3,7 @@ import { FaEnvelope, FaPhone, FaWhatsapp, FaTimes } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
-const API_URL = "http://localhost:1337";
+const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const getUniqueValues = (items, key) => {
   const values = items

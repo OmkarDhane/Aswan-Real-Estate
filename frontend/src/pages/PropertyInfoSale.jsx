@@ -3,7 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { FaPhoneAlt, FaEnvelope, FaWhatsapp, FaTimes, FaMinus, FaPlus } from "react-icons/fa";
 import Footer from "../components/Footer";
 
-const API_URL = "http://localhost:1337";
+// const API_URL = "http://localhost:1337";
+const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const PropertyInfoSale = () => {
   const { id } = useParams();

@@ -4,7 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
 // Render वर गेल्यावर ही URL तुमच्या Live URL ने बदला
-const API_URL = "http://localhost:1337";
+// const API_URL = "http://localhost:1337";
+const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const getUniqueValues = (items, key) => {
   const values = items
