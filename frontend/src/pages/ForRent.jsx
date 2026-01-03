@@ -3,6 +3,7 @@ import { FaEnvelope, FaPhone, FaWhatsapp, FaTimes } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
+// Render Live API URL
 const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const getUniqueValues = (items, key) => {
@@ -39,13 +40,14 @@ const ForRent = () => {
 
   const fetchProperties = async () => {
     try {
-      // इथे लिंक अपडेट केली आहे: filters[type][$eq]=For Rent
+      // Strapi 5 API call with filters for Rent
       const response = await fetch(`${API_URL}/api/properties?filters[type][$eq]=For Rent&populate=*`);
       const json = await response.json();
       const data = json.data || [];
       setProperties(data);
+      
       setAreas(getUniqueValues(data, "area"));
-      setTypes(getUniqueValues(data, "type"));
+      setTypes(getUniqueValues(data, "category")); // Ensure this matches your Strapi field name
       setBedsList(getUniqueValues(data, "beds"));
     } catch (error) {
       console.error("Error fetching properties:", error);
@@ -69,8 +71,8 @@ const ForRent = () => {
       property.location?.toLowerCase().includes(searchTerm) ||
       property.area?.toLowerCase().includes(searchTerm);
 
-    const matchArea = filters.area === "All" || property.area?.includes(filters.area) || property.location?.includes(filters.area);
-    const matchType = filters.type === "All" || property.type?.includes(filters.type);
+    const matchArea = filters.area === "All" || property.area === filters.area;
+    const matchType = filters.type === "All" || property.category === filters.type;
     const matchMinPrice = !filters.minPrice || property.price >= parseInt(filters.minPrice);
     const matchMaxPrice = !filters.maxPrice || property.price <= parseInt(filters.maxPrice);
     const matchMinBeds = filters.minBeds === "All" || property.beds >= parseInt(filters.minBeds);
@@ -83,7 +85,7 @@ const ForRent = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 font-[Poppins]">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-medium mb-6 text-black">Find your perfect home for rent in Dubai.</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-black">Find your perfect home for rent in Dubai.</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           <select name="area" value={filters.area} onChange={handleFilterChange} className="border rounded px-3 py-2 text-sm outline-none focus:border-red-600">
@@ -102,7 +104,13 @@ const ForRent = () => {
         <div className="space-y-6">
           {filteredProperties.length > 0 ? (
             filteredProperties.map((property) => {
-              const imageUrl = property.images?.[0]?.url ? `${API_URL}${property.images[0].url}` : "/assets/placeholder.jpg";
+              // Image logic for Cloudinary / Strapi 5
+              const rawImageUrl = property.images?.[0]?.url;
+              const imageUrl = rawImageUrl 
+                ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`)
+                : "/assets/placeholder.jpg";
+
+              // Description logic for Strapi 5 Blocks
               const desc = property.description?.[0]?.children?.[0]?.text || "No description available.";
 
               return (
@@ -114,13 +122,13 @@ const ForRent = () => {
                   <div className="w-full md:w-[55%] p-6 flex flex-col justify-between">
                     <div>
                       <Link to={`/property-info-rent/${property.documentId}`}>
-                        <h3 className="text-2xl font-normal mb-2 hover:text-red-600 transition-colors cursor-pointer uppercase tracking-tight">{property.title}</h3>
+                        <h3 className="text-2xl font-medium mb-2 hover:text-red-600 transition-colors cursor-pointer uppercase tracking-tight">{property.title}</h3>
                       </Link>
-                      <p className="text-red-600 text-xl font-normal mb-3">AED {property.price?.toLocaleString()} <span className="text-sm font-normal text-gray-500">/ Year</span></p>
+                      <p className="text-red-600 text-xl font-bold mb-3">AED {property.price?.toLocaleString()} <span className="text-sm font-normal text-gray-500">/ Year</span></p>
                       <p className="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed">{desc}</p>
                       <div className="text-gray-500 text-sm font-medium">
-                        <span>{property.beds} Beds</span> | <span>{property.type}</span>
-                        <p className="uppercase mt-1">{property.area} | {property.location}</p>
+                        <span className="font-semibold">{property.beds} Beds</span> | <span>{property.category || property.type}</span>
+                        <p className="uppercase mt-1 text-xs">{property.area} | {property.location}</p>
                       </div>
                     </div>
 
@@ -134,12 +142,39 @@ const ForRent = () => {
               );
             })
           ) : (
-            <div className="text-center py-10 text-gray-500">No properties found matching your search.</div>
+            <div className="text-center py-10 text-gray-500 bg-white border rounded-lg">No properties found matching your search.</div>
           )}
         </div>
       </div>
       
-      {/* Popups remain same... */}
+      {/* Popups */}
+      {showCallPopup && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-xs p-8 text-center relative rounded shadow-xl">
+            <button onClick={() => setShowCallPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"><FaTimes /></button>
+            <FaPhone className="text-red-600 text-4xl mx-auto mb-4" />
+            <h2 className="text-xl font-bold mb-2 uppercase">Contact Us</h2>
+            <p className="text-gray-600 mb-6 font-semibold">+91 123 456 7890</p>
+            <a href="tel:+911234567890" className="inline-block w-full bg-red-600 text-white py-3 font-bold rounded uppercase hover:bg-black transition-colors">Call Now</a>
+          </div>
+        </div>
+      )}
+
+      {showEmailPopup && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md p-6 rounded relative shadow-xl">
+            <button onClick={() => setShowEmailPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"><FaTimes /></button>
+            <h2 className="text-xl font-bold mb-4 uppercase">Inquiry for {selectedProp}</h2>
+            <form action="https://formspree.io/f/xdkqzdbk" method="POST" className="space-y-4">
+              <input type="hidden" name="Property" value={selectedProp} />
+              <input className="w-full border p-3 rounded outline-none" name="name" placeholder="Full Name" required />
+              <input className="w-full border p-3 rounded outline-none" type="email" name="email" placeholder="Email" required />
+              <textarea className="w-full border p-3 rounded outline-none" name="message" rows="4" placeholder="Your Message" required />
+              <button className="w-full bg-red-600 text-white py-3 font-bold uppercase rounded hover:bg-black transition-all">Submit Inquiry</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

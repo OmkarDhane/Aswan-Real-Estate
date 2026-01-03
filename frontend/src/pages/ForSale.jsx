@@ -3,8 +3,7 @@ import { FaEnvelope, FaPhone, FaWhatsapp, FaTimes } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
-// Render वर गेल्यावर ही URL तुमच्या Live URL ने बदला
-// const API_URL = "http://localhost:1337";
+// Render Live API URL
 const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const getUniqueValues = (items, key) => {
@@ -41,7 +40,7 @@ const ForSale = () => {
 
   const fetchProperties = async () => {
     try {
-      // इथे लिंक अपडेट केली आहे: filters[type][$eq]=For Sale
+      // Strapi 5 साठी filters आणि populate वापरून डेटा मिळवणे
       const res = await fetch(
         `${API_URL}/api/properties?filters[type][$eq]=For Sale&populate=*`
       );
@@ -50,7 +49,7 @@ const ForSale = () => {
       setProperties(data);
       
       setAreas(getUniqueValues(data, "area"));
-      setTypes(getUniqueValues(data, "type"));
+      setTypes(getUniqueValues(data, "category")); // Strapi मध्ये category नाव असेल तर
       setBedsList(getUniqueValues(data, "beds"));
       
     } catch (err) {
@@ -76,7 +75,7 @@ const ForSale = () => {
       property.area?.toLowerCase().includes(searchTerm);
 
     const matchArea = filters.area === "All" || property.area === filters.area || property.location === filters.area;
-    const matchType = filters.type === "All" || property.type === filters.type;
+    const matchType = filters.type === "All" || property.category === filters.type;
     const matchMinPrice = !filters.minPrice || property.price >= Number(filters.minPrice);
     const matchMaxPrice = !filters.maxPrice || property.price <= Number(filters.maxPrice);
     const matchMinBeds = filters.minBeds === "All" || property.beds >= Number(filters.minBeds);
@@ -84,13 +83,13 @@ const ForSale = () => {
     return matchSearch && matchArea && matchType && matchMinPrice && matchMaxPrice && matchMinBeds;
   });
 
-  if (loading) return <div className="text-center py-20 font-[Poppins]">Loading...</div>;
+  if (loading) return <div className="text-center py-20 font-[Poppins]">Loading properties...</div>;
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 font-[Poppins]">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl mb-6">
-          Looking for a property in Dubai? Start your property search.
+        <h1 className="text-3xl sm:text-4xl mb-6 font-semibold">
+          Properties for Sale
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
@@ -112,10 +111,14 @@ const ForSale = () => {
         <div className="space-y-6">
           {filteredProperties.length > 0 ? (
             filteredProperties.map((property) => {
-              const mainImage = property.images?.[0]?.url 
-                ? `${API_URL}${property.images[0].url}` 
-                : "/assets/placeholder.jpg";
-              const descriptionText = property.description?.[0]?.children?.[0]?.text || "";
+              // Cloudinary Image URL logic
+              const rawImageUrl = property.images?.[0]?.url;
+              const mainImage = rawImageUrl 
+                ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`)
+                : "https://via.placeholder.com/400x300?text=No+Image";
+              
+              // Strapi 5 Blocks Description logic
+              const descriptionText = property.description?.[0]?.children?.[0]?.text || "No description available.";
 
               return (
                 <div key={property.documentId} className="bg-white rounded-lg shadow flex flex-col sm:flex-row overflow-hidden hover:shadow-md transition-shadow border border-gray-100">
@@ -126,20 +129,20 @@ const ForSale = () => {
                   <div className="w-full sm:w-1/2 p-6 flex flex-col justify-between">
                     <div>
                       <Link to={`/property-info-sale/${property.documentId}`}>
-                        <h3 className="text-2xl mb-2 hover:text-red-600 uppercase font-normal tracking-tight">{property.title}</h3>
+                        <h3 className="text-2xl mb-2 hover:text-red-600 uppercase font-medium tracking-tight">{property.title}</h3>
                       </Link>
-                      <p className="text-red-600 text-xl mb-2">AED {property.price?.toLocaleString()}</p>
+                      <p className="text-red-600 text-xl mb-2 font-bold">AED {property.price?.toLocaleString()}</p>
                       <p className="text-gray-700 mb-2 line-clamp-2 text-sm">{descriptionText}</p>
                       <div className="text-gray-500 text-sm">
-                        <p>{property.beds} Beds | {property.type}</p>
+                        <p className="font-semibold">{property.beds} Beds | {property.category || property.type}</p>
                         <p className="uppercase mt-1">{property.area} | {property.location}</p>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap gap-3 mt-4">
-                      <button onClick={() => setShowCallPopup(true)} className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition-all"><FaPhone /> Call</button>
-                      <button onClick={() => { setShowEmailPopup(true); setSelectedProp(property.title); }} className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition-all"><FaEnvelope /> Email</button>
-                      <a href="https://wa.me/911234567890" target="_blank" rel="noreferrer" className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-green-600 hover:text-white transition-all"><FaWhatsapp /> WhatsApp</a>
+                      <button onClick={() => setShowCallPopup(true)} className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition-all font-medium"><FaPhone /> Call</button>
+                      <button onClick={() => { setShowEmailPopup(true); setSelectedProp(property.title); }} className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition-all font-medium"><FaEnvelope /> Email</button>
+                      <a href="https://wa.me/911234567890" target="_blank" rel="noreferrer" className="flex items-center gap-2 border px-6 py-2 rounded text-sm hover:bg-green-600 hover:text-white transition-all font-medium"><FaWhatsapp /> WhatsApp</a>
                     </div>
                   </div>
                 </div>
@@ -151,7 +154,7 @@ const ForSale = () => {
         </div>
       </div>
 
-      {/* Popups (Same as before) */}
+      {/* Popups */}
       {showCallPopup && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-xs p-8 text-center relative rounded shadow-xl">

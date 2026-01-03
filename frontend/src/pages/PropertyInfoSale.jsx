@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { FaPhoneAlt, FaEnvelope, FaWhatsapp, FaTimes, FaMinus, FaPlus } from "react-icons/fa";
 import Footer from "../components/Footer";
 
-// const API_URL = "http://localhost:1337";
 const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const PropertyInfoSale = () => {
@@ -15,13 +14,11 @@ const PropertyInfoSale = () => {
   const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [showCallPopup, setShowCallPopup] = useState(false);
 
-  // --- Mortgage Calculator State ---
   const [propPrice, setPropPrice] = useState(0);
   const [downPaymentPct, setDownPaymentPct] = useState(20);
   const [durationYears, setDurationYears] = useState(25);
   const [interestRate, setInterestRate] = useState(3.59);
 
-  // Mortgage Calculation Logic
   const loanAmount = propPrice - (propPrice * (downPaymentPct / 100));
   const monthlyInterest = interestRate / 100 / 12;
   const numberOfPayments = durationYears * 12;
@@ -37,11 +34,11 @@ const PropertyInfoSale = () => {
 
   const fetchProperty = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/properties/${id}?populate=*`);
+      const res = await fetch(`${API_URL}/api/properties?filters[documentId][$eq]=${id}&populate=*`);
       const json = await res.json();
-      if (json.data) {
-        setProperty(json.data);
-        setPropPrice(json.data.price || 0);
+      if (json.data && json.data.length > 0) {
+        setProperty(json.data[0]);
+        setPropPrice(json.data[0].price || 0);
       }
     } catch (err) { console.error(err); } finally { setLoading(false); }
   };
@@ -57,15 +54,28 @@ const PropertyInfoSale = () => {
   if (loading) return <div className="text-center py-20 font-[Poppins]">Loading...</div>;
   if (!property) return <div className="text-center py-20 text-red-600 font-[Poppins]">Property not found</div>;
 
-  const fullDescriptionText = property.description
-    ?.map((block) => block.children?.map((child) => child.text).join(""))
-    .filter(text => text && text.trim() !== "")
-    .join("\n") 
-    .trim();
+  // --- FINAL AGGRESSIVE FILTER FOR "DRAG" ---
+  const fullDescriptionText = Array.isArray(property.description)
+    ? property.description
+        .map((block) => (block.children?.map((child) => child.text).join("") || "").trim())
+        .filter(text => {
+            const clean = text.toLowerCase();
+            // जर ओळीत 'drag' हा शब्द कुठेही असेल तर ती ओळ काढून टाक
+            return clean !== "" && !clean.includes("drag");
+        })
+        .join("\n")
+    : typeof property.description === "string" 
+      ? property.description.trim() 
+      : "";
 
   const similarProperties = allProperties
     .filter((p) => p.documentId !== property.documentId)
     .slice(0, 4);
+
+  const getImageUrl = (img) => {
+    if (!img || !img.url) return "https://via.placeholder.com/800x600?text=No+Image";
+    return img.url.startsWith('http') ? img.url : `${API_URL}${img.url}`;
+  };
 
   return (
     <div className="min-h-screen bg-white font-[Poppins]">
@@ -81,11 +91,11 @@ const PropertyInfoSale = () => {
         {/* Gallery */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="md:col-span-2 relative">
-            <img src={property.images?.[0]?.url ? `${API_URL}${property.images[0].url}` : ""} className="w-full h-[260px] md:h-[500px] object-cover" alt="Main" />
+            <img src={getImageUrl(property.images?.[0])} className="w-full h-[260px] md:h-[500px] object-cover" alt="Main" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             {property.images?.slice(1, 5).map((img, i) => (
-              <img key={i} src={`${API_URL}${img.url}`} className="w-full h-[120px] md:h-[240px] object-cover" alt="Gallery" />
+              <img key={i} src={getImageUrl(img)} className="w-full h-[120px] md:h-[240px] object-cover" alt="Gallery" />
             ))}
           </div>
         </div>
@@ -96,49 +106,35 @@ const PropertyInfoSale = () => {
           <div className="flex gap-3">
             <button onClick={() => setShowCallPopup(true)} className="px-6 py-2 border border-black flex items-center gap-2 hover:bg-black hover:text-white transition-all uppercase text-sm font-bold"><FaPhoneAlt /> Call</button>
             <button onClick={() => setShowEmailPopup(true)} className="px-6 py-2 border border-black flex items-center gap-2 hover:bg-black hover:text-white transition-all uppercase text-sm font-bold"><FaEnvelope /> Email</button>
-            <a href="https://wa.me/97143069999" target="_blank" className="px-6 py-2 border border-green-600 text-green-600 flex items-center gap-2 hover:bg-green-600 hover:text-white transition-all uppercase text-sm font-bold"><FaWhatsapp /> WhatsApp</a>
+            <a href="https://wa.me/97143069999" target="_blank" rel="noreferrer" className="px-6 py-2 border border-green-600 text-green-600 flex items-center gap-2 hover:bg-green-600 hover:text-white transition-all uppercase text-sm font-bold"><FaWhatsapp /> WhatsApp</a>
           </div>
         </div>
 
-        {/* --- Stats Section (Clean & Spacious) --- */}
-<div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-12 py-8 border-y border-gray-100 bg-gray-50/50 rounded-lg px-4">
-  <div className="flex flex-col gap-1">
-    <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Price</p>
-    <p className="text-red-600 font-bold text-xl md:text-2xl">
-      AED {property.price?.toLocaleString()}
-    </p>
-  </div>
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-12 py-8 border-y border-gray-100 bg-gray-50/50 rounded-lg px-4">
+          <div className="flex flex-col gap-1">
+            <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Price</p>
+            <p className="text-red-600 font-bold text-xl md:text-2xl">AED {property.price?.toLocaleString()}</p>
+          </div>
+          <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
+            <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Location</p>
+            <p className="font-medium uppercase text-sm md:text-base text-gray-800 leading-tight">{property.location}</p>
+          </div>
+          <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
+            <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Bedrooms</p>
+            <p className="font-medium text-sm md:text-base text-gray-800">{property.beds} BHK</p>
+          </div>
+          <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
+            <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Area</p>
+            <p className="font-medium uppercase text-sm md:text-base text-gray-800">{property.area}</p>
+          </div>
+          <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
+            <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Property Type</p>
+            <p className="font-bold uppercase text-xs md:text-sm text-blue-600 bg-blue-50 px-2 py-1 rounded w-fit">{property.category || "Property"}</p>
+          </div>
+        </div>
 
-  <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
-    <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Location</p>
-    <p className="font-medium uppercase text-sm md:text-base text-gray-800 leading-tight">
-      {property.location}
-    </p>
-  </div>
-
-  <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
-    <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Bedrooms</p>
-    <p className="font-medium text-sm md:text-base text-gray-800">
-      {property.beds} BHK
-    </p>
-  </div>
-
-  <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
-    <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Area</p>
-    <p className="font-medium uppercase text-sm md:text-base text-gray-800">
-      {property.area}
-    </p>
-  </div>
-
-  <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
-    <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Property Type</p>
-    <p className="font-bold uppercase text-xs md:text-sm text-blue-600 bg-blue-50 px-2 py-1 rounded w-fit">
-      {property.category || "Property"}
-    </p>
-  </div>
-</div>
-
-        {/* Description */}
+        {/* Description Section */}
         <div className="mb-16">
           <h2 className="text-xl md:text-2xl font-bold mb-4 uppercase tracking-tight">Description</h2>
           <p className="text-gray-600 whitespace-pre-line leading-relaxed italic">
@@ -156,13 +152,11 @@ const PropertyInfoSale = () => {
           </div>
         )}
 
-        {/* --- Calculator & Inquiry Section --- */}
+        {/* Calculator & Inquiry Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20 border-t pt-16">
-          
           {/* Mortgage Calculator */}
           <div className="bg-white">
             <h2 className="text-3xl font-light text-gray-800 mb-8">Calculate your Mortgage</h2>
-            
             <div className="space-y-10">
               <div>
                 <label className="text-gray-400 text-xs uppercase font-bold mb-2 block tracking-widest">Property Price:</label>
@@ -171,7 +165,6 @@ const PropertyInfoSale = () => {
                   <span className="text-gray-600 font-bold">AED</span>
                 </div>
               </div>
-
               <div>
                 <div className="flex justify-between text-xs font-bold mb-4">
                   <span className="text-gray-400 uppercase tracking-widest">Down Payment:</span>
@@ -180,25 +173,11 @@ const PropertyInfoSale = () => {
                 <input type="range" min="5" max="80" value={downPaymentPct} onChange={(e) => setDownPaymentPct(e.target.value)} className="w-full accent-gray-800 h-1 bg-gray-200 appearance-none cursor-pointer" />
                 <div className="text-right mt-2 text-gray-800 font-bold">{downPaymentPct} %</div>
               </div>
-
               <div>
                 <span className="text-gray-400 text-xs uppercase font-bold mb-4 block tracking-widest">Duration:</span>
                 <input type="range" min="1" max="30" value={durationYears} onChange={(e) => setDurationYears(e.target.value)} className="w-full accent-gray-800 h-1 bg-gray-200 appearance-none cursor-pointer" />
                 <div className="text-right mt-2 text-gray-800 font-bold">{durationYears} Years</div>
               </div>
-
-              <div>
-                <span className="text-gray-400 text-xs uppercase font-bold mb-2 block tracking-widest">Interest Rate:</span>
-                <div className="flex items-center gap-4">
-                  <div className="border border-gray-800 p-3 flex justify-between w-full">
-                    <input type="number" step="0.01" value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} className="outline-none w-full text-lg font-bold" />
-                    <span className="font-bold">%</span>
-                  </div>
-                  <button onClick={() => setInterestRate(prev => Math.max(0, (parseFloat(prev) - 0.1).toFixed(2)))} className="border border-gray-300 p-4 rounded-full hover:bg-gray-100 transition-all"><FaMinus className="text-xs"/></button>
-                  <button onClick={() => setInterestRate(prev => (parseFloat(prev) + 0.1).toFixed(2))} className="border border-gray-300 p-4 rounded-full hover:bg-gray-100 transition-all"><FaPlus className="text-xs"/></button>
-                </div>
-              </div>
-
               <div className="pt-6">
                 <p className="text-gray-400 text-xs uppercase font-bold mb-1 tracking-widest">Monthly Payment:</p>
                 <p className="text-red-600 text-5xl font-medium tracking-tighter">AED {monthlyPayment.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
@@ -206,11 +185,10 @@ const PropertyInfoSale = () => {
             </div>
           </div>
 
-          {/* Dynamic Inquiry Form */}
+          {/* Form */}
           <div className="bg-[#f9f9f9] p-10 border border-gray-100 shadow-sm">
             <h2 className="text-2xl font-bold mb-6 uppercase tracking-[2px]">Inquire Now</h2>
             <form action="https://formspree.io/f/xdkqzdbk" method="POST" className="space-y-6">
-              
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Property Location</label>
@@ -221,18 +199,15 @@ const PropertyInfoSale = () => {
                   <input className="w-full border-b border-gray-300 bg-transparent py-2 outline-none focus:border-red-600 font-bold uppercase text-sm" name="category" value={property.category || "Sale"} readOnly />
                 </div>
               </div>
-
               <input className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600" name="name" placeholder="FULL NAME *" required />
               <input className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600" type="email" name="email" placeholder="EMAIL ADDRESS *" required />
               <input className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600" name="phone" placeholder="PHONE NUMBER *" required />
-              
               <textarea 
                 className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600 resize-none" 
                 rows="3" name="message" 
-                defaultValue={`I am interested in ${property.title} for Sale. Please share more details.`}
+                defaultValue={`I am interested in ${property.title} for Sale.`}
                 required 
               />
-
               <button className="w-full bg-black text-white py-5 font-bold uppercase hover:bg-red-600 transition-all tracking-[3px] mt-4 text-sm">Send Inquiry</button>
             </form>
           </div>
@@ -246,7 +221,7 @@ const PropertyInfoSale = () => {
               {similarProperties.map((p) => (
                 <Link key={p.documentId} to={`/property-info-sale/${p.documentId}`} className="bg-white border border-gray-100 group transition-all hover:shadow-lg">
                   <div className="overflow-hidden h-48">
-                    <img src={p.images?.[0]?.url ? `${API_URL}${p.images[0].url}` : ""} className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" alt={p.title} />
+                    <img src={getImageUrl(p.images?.[0])} className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" alt={p.title} />
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold uppercase text-xs truncate tracking-wider">{p.title}</h3>
