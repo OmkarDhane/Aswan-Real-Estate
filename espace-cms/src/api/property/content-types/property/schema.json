@@ -22,7 +22,7 @@
       ]
     },
     "description": {
-      "type": "blocks"
+      "type": "text"
     },
     "location": {
       "type": "text"
@@ -37,7 +37,7 @@
       "type": "text"
     },
     "amenties": {
-      "type": "blocks"
+      "type": "text"
     },
     "map": {
       "type": "text"
