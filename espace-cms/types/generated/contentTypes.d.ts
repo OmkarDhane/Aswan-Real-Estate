@@ -478,7 +478,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    amenties: Schema.Attribute.Blocks;
+    amenties: Schema.Attribute.Text;
     area: Schema.Attribute.Text;
     beds: Schema.Attribute.Integer;
     category: Schema.Attribute.Enumeration<
@@ -487,7 +487,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
+    description: Schema.Attribute.Blocks;
     images: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
