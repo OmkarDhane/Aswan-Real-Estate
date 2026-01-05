@@ -22,7 +22,7 @@
       ]
     },
     "description": {
-      "type": "blocks"
+      "type": "text"
     },
     "location": {
       "type": "text"
