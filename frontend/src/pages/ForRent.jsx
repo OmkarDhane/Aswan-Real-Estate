@@ -122,7 +122,7 @@ const ForRent = () => {
                   <div className="w-full md:w-[55%] p-6 flex flex-col justify-between">
                     <div>
                       <Link to={`/property-info-rent/${property.documentId}`}>
-                        <h3 className="text-2xl font-medium mb-2 hover:text-red-600 transition-colors cursor-pointer uppercase tracking-tight">{property.title}</h3>
+                        <h3 className="text-2xl font-medium mb-2 hover:text-red-600 transition-colors cursor-pointer  tracking-tight">{property.title}</h3>
                       </Link>
                       <p className="text-red-600 text-xl font-bold mb-3">AED {property.price?.toLocaleString()} <span className="text-sm font-normal text-gray-500">/ Year</span></p>
                       <p className="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed">{desc}</p>

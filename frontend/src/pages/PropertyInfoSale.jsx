@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FaPhoneAlt, FaEnvelope, FaWhatsapp, FaTimes, FaMinus, FaPlus } from "react-icons/fa";
+import { FaPhoneAlt, FaEnvelope, FaWhatsapp, FaTimes } from "react-icons/fa";
 import Footer from "../components/Footer";
 
 const API_URL = "https://aswan-real-estate-3.onrender.com";
@@ -54,26 +54,27 @@ const PropertyInfoSale = () => {
   if (loading) return <div className="text-center py-20 font-[Poppins]">Loading...</div>;
   if (!property) return <div className="text-center py-20 text-red-600 font-[Poppins]">Property not found</div>;
 
-  // --- FINAL AGGRESSIVE FILTER FOR "DRAG" ---
+  // --- १. DRAG शब्द काढण्यासाठी फिल्टर ---
   const fullDescriptionText = Array.isArray(property.description)
     ? property.description
         .map((block) => (block.children?.map((child) => child.text).join("") || "").trim())
         .filter(text => {
             const clean = text.toLowerCase();
-            // जर ओळीत 'drag' हा शब्द कुठेही असेल तर ती ओळ काढून टाक
             return clean !== "" && !clean.includes("drag");
         })
         .join("\n")
     : typeof property.description === "string" 
-      ? property.description.trim() 
+      ? property.description.replace(/drag/gi, "").trim() 
       : "";
 
   const similarProperties = allProperties
     .filter((p) => p.documentId !== property.documentId)
     .slice(0, 4);
 
+  // --- २. इमेज नीट दिसण्यासाठी फंक्शन ---
   const getImageUrl = (img) => {
     if (!img || !img.url) return "https://via.placeholder.com/800x600?text=No+Image";
+    // जर लिंक http ने सुरू होत नसेल तर API_URL जोडा
     return img.url.startsWith('http') ? img.url : `${API_URL}${img.url}`;
   };
 
@@ -81,7 +82,6 @@ const PropertyInfoSale = () => {
     <div className="min-h-screen bg-white font-[Poppins]">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
         
-        {/* Breadcrumb */}
         <div className="text-sm text-gray-500 mb-6 uppercase tracking-wider">
           <Link to="/" className="hover:text-red-600">Home</Link> &gt;
           <Link to="/for-sale" className="hover:text-red-600 mx-1">For Sale</Link>
@@ -100,7 +100,6 @@ const PropertyInfoSale = () => {
           </div>
         </div>
 
-        {/* Title + Buttons */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
           <h1 className="text-2xl md:text-3xl font-semibold uppercase">{property.title}</h1>
           <div className="flex gap-3">
@@ -110,7 +109,6 @@ const PropertyInfoSale = () => {
           </div>
         </div>
 
-        {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-12 py-8 border-y border-gray-100 bg-gray-50/50 rounded-lg px-4">
           <div className="flex flex-col gap-1">
             <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Price</p>
@@ -134,7 +132,6 @@ const PropertyInfoSale = () => {
           </div>
         </div>
 
-        {/* Description Section */}
         <div className="mb-16">
           <h2 className="text-xl md:text-2xl font-bold mb-4 uppercase tracking-tight">Description</h2>
           <p className="text-gray-600 whitespace-pre-line leading-relaxed italic">
@@ -142,7 +139,6 @@ const PropertyInfoSale = () => {
           </p>
         </div>
 
-        {/* Map Section */}
         {property.map && (
           <div className="mb-16">
             <h2 className="text-xl md:text-2xl font-bold mb-6 uppercase">Property Location</h2>
@@ -152,9 +148,7 @@ const PropertyInfoSale = () => {
           </div>
         )}
 
-        {/* Calculator & Inquiry Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20 border-t pt-16">
-          {/* Mortgage Calculator */}
           <div className="bg-white">
             <h2 className="text-3xl font-light text-gray-800 mb-8">Calculate your Mortgage</h2>
             <div className="space-y-10">
@@ -185,7 +179,6 @@ const PropertyInfoSale = () => {
             </div>
           </div>
 
-          {/* Form */}
           <div className="bg-[#f9f9f9] p-10 border border-gray-100 shadow-sm">
             <h2 className="text-2xl font-bold mb-6 uppercase tracking-[2px]">Inquire Now</h2>
             <form action="https://formspree.io/f/xdkqzdbk" method="POST" className="space-y-6">
@@ -213,7 +206,6 @@ const PropertyInfoSale = () => {
           </div>
         </div>
 
-        {/* Similar Properties */}
         {similarProperties.length > 0 && (
           <div className="mb-10 border-t pt-10">
             <h2 className="text-xl md:text-2xl font-bold mb-8 uppercase tracking-tight">Similar Properties</h2>
@@ -236,7 +228,6 @@ const PropertyInfoSale = () => {
       </div>
       <Footer />
       
-      {/* Popups */}
       {showEmailPopup && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white w-full max-w-md p-8 relative shadow-2xl border-t-4 border-red-600">

@@ -129,7 +129,7 @@ const ForSale = () => {
                   <div className="w-full sm:w-1/2 p-6 flex flex-col justify-between">
                     <div>
                       <Link to={`/property-info-sale/${property.documentId}`}>
-                        <h3 className="text-2xl mb-2 hover:text-red-600 uppercase font-medium tracking-tight">{property.title}</h3>
+                        <h3 className="text-2xl mb-2 hover:text-red-600 font-medium tracking-tight">{property.title}</h3>
                       </Link>
                       <p className="text-red-600 text-xl mb-2 font-bold">AED {property.price?.toLocaleString()}</p>
                       <p className="text-gray-700 mb-2 line-clamp-2 text-sm">{descriptionText}</p>

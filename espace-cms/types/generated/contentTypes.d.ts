@@ -478,7 +478,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    amenties: Schema.Attribute.Text;
+    amenties: Schema.Attribute.Blocks;
     area: Schema.Attribute.Text;
     beds: Schema.Attribute.Integer;
     category: Schema.Attribute.Enumeration<
