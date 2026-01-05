@@ -13,6 +13,7 @@ const PropertyInfoSale = () => {
 
   const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [showCallPopup, setShowCallPopup] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [propPrice, setPropPrice] = useState(0);
   const [downPaymentPct, setDownPaymentPct] = useState(20);
@@ -51,10 +52,20 @@ const PropertyInfoSale = () => {
     } catch (err) { console.error(err); }
   };
 
+  // --- इमेज फिक्स: Blur काढण्यासाठी आणि पूर्ण URL देण्यासाठी ---
+  const getImageUrl = (img) => {
+    if (!img) return "https://via.placeholder.com/1200x800?text=No+Image";
+    
+    // Cloudinary मध्ये Strapi 'large' फॉरमॅट देतो, तो नसल्यास थेट 'url' वापरणे सर्वोत्तम असते.
+    // thumbnail किंवा small फॉरमॅट वापरल्यास फोटो ब्लर दिसतात.
+    const url = img.formats?.large?.url || img.formats?.medium?.url || img.url;
+    
+    return url.startsWith('http') ? url : `${API_URL}${url}`;
+  };
+
   if (loading) return <div className="text-center py-20 font-[Poppins]">Loading...</div>;
   if (!property) return <div className="text-center py-20 text-red-600 font-[Poppins]">Property not found</div>;
 
-  // --- १. DRAG शब्द काढण्यासाठी फिल्टर ---
   const fullDescriptionText = Array.isArray(property.description)
     ? property.description
         .map((block) => (block.children?.map((child) => child.text).join("") || "").trim())
@@ -71,13 +82,6 @@ const PropertyInfoSale = () => {
     .filter((p) => p.documentId !== property.documentId)
     .slice(0, 4);
 
-  // --- २. इमेज नीट दिसण्यासाठी फंक्शन ---
-  const getImageUrl = (img) => {
-    if (!img || !img.url) return "https://via.placeholder.com/800x600?text=No+Image";
-    // जर लिंक http ने सुरू होत नसेल तर API_URL जोडा
-    return img.url.startsWith('http') ? img.url : `${API_URL}${img.url}`;
-  };
-
   return (
     <div className="min-h-screen bg-white font-[Poppins]">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
@@ -90,12 +94,21 @@ const PropertyInfoSale = () => {
 
         {/* Gallery */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="md:col-span-2 relative">
-            <img src={getImageUrl(property.images?.[0])} className="w-full h-[260px] md:h-[500px] object-cover" alt="Main" />
+          <div className="md:col-span-2 relative cursor-pointer group overflow-hidden rounded-lg" onClick={() => setSelectedImage(getImageUrl(property.images?.[0]))}>
+            <img src={getImageUrl(property.images?.[0])} className="w-full h-[300px] md:h-[550px] object-cover rounded-lg shadow-sm group-hover:scale-105 transition-all duration-700" alt="Main" />
+            <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span className="bg-white/80 px-4 py-2 rounded text-xs font-bold uppercase tracking-widest">View Full Image</span>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {property.images?.slice(1, 5).map((img, i) => (
-              <img key={i} src={getImageUrl(img)} className="w-full h-[120px] md:h-[240px] object-cover" alt="Gallery" />
+              <img 
+                key={i} 
+                src={getImageUrl(img)} 
+                className="w-full h-[145px] md:h-[268px] object-cover rounded-lg shadow-sm cursor-pointer hover:opacity-90 transition-all border border-gray-100" 
+                alt="Gallery" 
+                onClick={() => setSelectedImage(getImageUrl(img))}
+              />
             ))}
           </div>
         </div>
@@ -148,6 +161,7 @@ const PropertyInfoSale = () => {
           </div>
         )}
 
+        {/* Mortgage Calculator */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20 border-t pt-16">
           <div className="bg-white">
             <h2 className="text-3xl font-light text-gray-800 mb-8">Calculate your Mortgage</h2>
@@ -211,13 +225,13 @@ const PropertyInfoSale = () => {
             <h2 className="text-xl md:text-2xl font-bold mb-8 uppercase tracking-tight">Similar Properties</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {similarProperties.map((p) => (
-                <Link key={p.documentId} to={`/property-info-sale/${p.documentId}`} className="bg-white border border-gray-100 group transition-all hover:shadow-lg">
+                <Link key={p.documentId} to={`/property-info-sale/${p.documentId}`} className="bg-white border border-gray-100 group transition-all hover:shadow-lg rounded-lg overflow-hidden">
                   <div className="overflow-hidden h-48">
-                    <img src={getImageUrl(p.images?.[0])} className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500" alt={p.title} />
+                    <img src={getImageUrl(p.images?.[0])} className="h-full w-full object-cover group-hover:scale-110 transition-all duration-700" alt={p.title} />
                   </div>
                   <div className="p-4">
-                    <h3 className="font-bold uppercase text-xs truncate tracking-wider">{p.title}</h3>
-                    <p className="text-red-600 font-bold mt-1">AED {p.price?.toLocaleString()}</p>
+                    <h3 className="font-bold uppercase text-[10px] truncate tracking-wider text-gray-800">{p.title}</h3>
+                    <p className="text-red-600 font-bold mt-1 text-sm">AED {p.price?.toLocaleString()}</p>
                   </div>
                 </Link>
               ))}
@@ -228,8 +242,26 @@ const PropertyInfoSale = () => {
       </div>
       <Footer />
       
+      {/* FULL SCREEN IMAGE LIGHTBOX */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-[999] flex items-center justify-center p-4 backdrop-blur-md cursor-zoom-out" 
+          onClick={() => setSelectedImage(null)}
+        >
+          <button className="absolute top-6 right-6 text-white hover:text-red-600 transition-colors">
+            <FaTimes size={30}/>
+          </button>
+          <img 
+            src={selectedImage} 
+            className="max-w-full max-h-[92vh] object-contain rounded-lg shadow-2xl animate-in fade-in zoom-in duration-300" 
+            alt="Preview" 
+          />
+        </div>
+      )}
+
+      {/* Popups */}
       {showEmailPopup && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white w-full max-w-md p-8 relative shadow-2xl border-t-4 border-red-600">
             <button onClick={() => setShowEmailPopup(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors"><FaTimes size={20}/></button>
             <h2 className="text-2xl font-bold mb-6 uppercase tracking-widest">Email Inquiry</h2>
@@ -244,13 +276,13 @@ const PropertyInfoSale = () => {
       )}
 
       {showCallPopup && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white w-full max-w-xs p-10 text-center relative shadow-2xl border-b-4 border-red-600">
             <button onClick={() => setShowCallPopup(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black"><FaTimes /></button>
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                <FaPhoneAlt className="text-red-600 text-2xl" />
             </div>
-            <h2 className="text-xl font-bold mb-2 uppercase tracking-widest">Call Agent</h2>
+            <h2 className="text-xl font-bold mb-2 uppercase tracking-widest">Call Now</h2>
             <p className="text-gray-500 mb-8 font-medium tracking-tight">+971 4 306 9999</p>
             <a href="tel:+97143069999" className="inline-block w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-red-600 transition-all">Call Now</a>
           </div>

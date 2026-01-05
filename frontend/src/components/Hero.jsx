@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-const API_URL = "http://localhost:1337"; // Strapi URL
+const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -17,13 +17,12 @@ const Hero = () => {
 
   const fetchSale = async () => {
     try {
-      // Strapi कडून 'sale' डेटा मिळवणे
       const res = await fetch(
         `${API_URL}/api/properties?filters[type][$eq]=For Sale&populate=*`
       );
       const json = await res.json();
       const mappedData = (json.data || []).map((item) => ({ ...item, type: "Buy" }));
-      setSale(mappedData.slice(0, 2)); // फक्त २ डेटा
+      setSale(mappedData.slice(0, 2)); 
     } catch (error) {
       console.error("Error fetching sale properties:", error);
     }
@@ -31,11 +30,10 @@ const Hero = () => {
 
   const fetchRent = async () => {
     try {
-      // Strapi कडून 'rent' डेटा मिळवणे
       const res = await fetch(`${API_URL}/api/properties?filters[type][$eq]=For Rent&populate=*`);
       const json = await res.json();
       const mappedData = (json.data || []).map((item) => ({ ...item, type: "Rent" }));
-      setRent(mappedData.slice(0, 2)); // फक्त २ डेटा
+      setRent(mappedData.slice(0, 2));
     } catch (error) {
       console.error("Error fetching rent properties:", error);
     }
@@ -56,7 +54,6 @@ const Hero = () => {
   };
 
   const handleClick = (property) => {
-    // Strapi documentId वापरून नेव्हिगेशन
     if (property.type === "Buy") {
       navigate(`/property-info-sale/${property.documentId}`);
     } else {
@@ -77,18 +74,16 @@ const Hero = () => {
             Search properties across Dubai — villas, apartments, luxury listings
           </p>
 
-          {/* Search Input */}
           <div className="mt-4 w-full max-w-md mx-auto lg:mx-0">
             <input
               type="text"
               placeholder="Search by area or title"
-              className="w-full border border-gray-200 hover:border-gray-400 rounded-md px-4 py-3 text-base sm:text-lg font-medium transition-colors"
+              className="w-full border border-gray-200 hover:border-gray-400 rounded-md px-4 py-3 text-base sm:text-lg font-medium transition-colors outline-none"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          {/* Book a property valuation */}
           <p className="mt-3 text-sm sm:text-base text-gray-500">
             or{" "}
             <Link
@@ -102,7 +97,6 @@ const Hero = () => {
 
         {/* Right Thumbnails */}
         <div className="lg:col-span-6 flex flex-col">
-          {/* Filter Buttons */}
           <div className="flex justify-center lg:justify-end gap-2 mb-4 flex-wrap">
             {["All", "Buy", "Rent"].map((type) => (
               <button
@@ -119,13 +113,14 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Property Thumbnails */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {propertiesToShow().map((property) => {
-              // Strapi इमेज URL सेटअप
-              const imageUrl = property.images?.[0]?.url 
-                ? `${API_URL}${property.images[0].url}` 
-                : "/assets/placeholder.jpg";
+              
+              // --- प्रॉपर इमेज लॉजिक (Cloudinary आणि Local Strapi दोन्हीसाठी) ---
+              const rawImageUrl = property.images?.[0]?.url;
+              const imageUrl = rawImageUrl 
+                ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`)
+                : "https://via.placeholder.com/400x300?text=No+Image";
 
               return (
                 <div
@@ -137,16 +132,17 @@ const Hero = () => {
                     src={imageUrl}
                     alt={property.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => { e.target.src = "https://via.placeholder.com/400x300?text=Error+Loading"; }}
                   />
-                  <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity p-2">
-                    <p className="text-white text-sm font-semibold text-center uppercase">{property.title}</p>
+                  <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity p-2 text-center">
+                    <p className="text-white text-sm font-semibold uppercase">{property.title}</p>
                   </div>
                 </div>
               );
             })}
 
             {propertiesToShow().length === 0 && (
-              <p className="text-center text-gray-500 col-span-1 sm:col-span-2">No properties found.</p>
+              <p className="text-center text-gray-500 col-span-1 sm:col-span-2 py-10">No properties found.</p>
             )}
           </div>
         </div>
