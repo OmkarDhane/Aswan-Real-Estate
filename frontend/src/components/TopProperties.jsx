@@ -102,7 +102,7 @@ const TopPropertiesForSaleRent = () => {
         {loading ? (
           <div className="py-20 text-center text-gray-500 font-medium">Loading properties...</div>
         ) : currentProps.length > 0 ? (
-          /* key={activeTab} मुळे टॅब बदलल्यावर स्लाईडर रिफ्रेश होईल आणि एरर येणार नाही */
+          
           <Slider key={activeTab} {...sliderSettings}>
             {currentProps.map((prop) => {
               const rawImageUrl = prop.images?.[0]?.url;

@@ -52,12 +52,11 @@ const PropertyInfoSale = () => {
     } catch (err) { console.error(err); }
   };
 
-  // --- इमेज फिक्स: Blur काढण्यासाठी आणि पूर्ण URL देण्यासाठी ---
+  
   const getImageUrl = (img) => {
     if (!img) return "https://via.placeholder.com/1200x800?text=No+Image";
     
-    // Cloudinary मध्ये Strapi 'large' फॉरमॅट देतो, तो नसल्यास थेट 'url' वापरणे सर्वोत्तम असते.
-    // thumbnail किंवा small फॉरमॅट वापरल्यास फोटो ब्लर दिसतात.
+    
     const url = img.formats?.large?.url || img.formats?.medium?.url || img.url;
     
     return url.startsWith('http') ? url : `${API_URL}${url}`;

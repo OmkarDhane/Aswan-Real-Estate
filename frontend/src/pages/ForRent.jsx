@@ -47,7 +47,7 @@ const ForRent = () => {
       setProperties(data);
       
       setAreas(getUniqueValues(data, "area"));
-      setTypes(getUniqueValues(data, "category")); // Ensure this matches your Strapi field name
+      setTypes(getUniqueValues(data, "category")); 
       setBedsList(getUniqueValues(data, "beds"));
     } catch (error) {
       console.error("Error fetching properties:", error);
@@ -110,7 +110,7 @@ const ForRent = () => {
                 ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`)
                 : "/assets/placeholder.jpg";
 
-              // Description logic for Strapi 5 Blocks
+              
               const desc = property.description?.[0]?.children?.[0]?.text || "No description available.";
 
               return (

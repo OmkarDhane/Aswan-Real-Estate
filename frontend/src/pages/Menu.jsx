@@ -29,7 +29,7 @@ const MenuPage = () => {
 
   // Close menu function
   const handleClose = () => {
-    navigate(-1); // Goes back to previous page
+    navigate(-1); 
   };
 
   return (

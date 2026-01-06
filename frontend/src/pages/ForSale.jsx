@@ -3,7 +3,7 @@ import { FaEnvelope, FaPhone, FaWhatsapp, FaTimes } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
-// Render Live API URL
+
 const API_URL = "https://aswan-real-estate-3.onrender.com";
 
 const getUniqueValues = (items, key) => {
@@ -40,7 +40,7 @@ const ForSale = () => {
 
   const fetchProperties = async () => {
     try {
-      // Strapi 5 साठी filters आणि populate वापरून डेटा मिळवणे
+     
       const res = await fetch(
         `${API_URL}/api/properties?filters[type][$eq]=For Sale&populate=*`
       );
@@ -49,7 +49,7 @@ const ForSale = () => {
       setProperties(data);
       
       setAreas(getUniqueValues(data, "area"));
-      setTypes(getUniqueValues(data, "category")); // Strapi मध्ये category नाव असेल तर
+      setTypes(getUniqueValues(data, "category")); 
       setBedsList(getUniqueValues(data, "beds"));
       
     } catch (err) {

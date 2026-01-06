@@ -6,7 +6,7 @@ const SearchPopup = ({ onClose }) => {
   const navigate = useNavigate();
 
   const executeSearch = (searchMode) => {
-    // जर काही टाईप केले असेल तर सर्च पॅरामीटरसह जा, नाहीतर डायरेक्ट पेजवर जा
+    
     const path = searchMode === "rent" ? "/for-rent" : "/for-sale";
     const finalUrl = query.trim() 
       ? `${path}?search=${encodeURIComponent(query.trim())}` 

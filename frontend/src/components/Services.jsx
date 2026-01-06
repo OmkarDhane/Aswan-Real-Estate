@@ -8,7 +8,7 @@ const Services = () => {
     {
       title: "Property Valuation",
       desc: "We’ll give you an accurate sale and rental value of your property.",
-      img: "/assets/valuation.webp", // fixed path
+      img: "/assets/valuation.webp", 
       link: "/valuation",
       btn: "Book A Valuation",
     },

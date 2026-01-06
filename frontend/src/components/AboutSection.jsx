@@ -7,7 +7,7 @@ const AboutSection = () => {
     <section
       className="relative w-full h-[600px] flex items-center"
       style={{
-        backgroundImage: "url('/assets/about.webp')", // तुझा फोटो
+        backgroundImage: "url('/assets/about.webp')", 
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

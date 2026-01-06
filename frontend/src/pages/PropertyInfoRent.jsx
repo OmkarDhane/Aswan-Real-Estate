@@ -52,16 +52,16 @@ const PropertyInfoRent = () => {
     } catch (err) { console.error(err); }
   };
 
-  // --- १. HD IMAGE FUNCTION (Force Cloudinary to send high quality) ---
+  
   const getImageUrl = (img) => {
     if (!img) return "https://via.placeholder.com/1200x800?text=No+Image";
     
-    // मूळ URL शोधा
+   
     let url = img.formats?.large?.url || img.formats?.medium?.url || img.url;
 
-    // जर इमेज Cloudinary वर असेल, तर त्याचे क्वालिटी पॅरामीटर्स बदला
+   
     if (url.includes("cloudinary.com")) {
-        // q_auto:best आणि f_auto मुळे इमेजची क्लॅरिटी वाढते
+       
         url = url.replace("/upload/", "/upload/q_auto:best,f_auto,w_1200/");
     } else {
         url = url.startsWith('http') ? url : `${API_URL}${url}`;
