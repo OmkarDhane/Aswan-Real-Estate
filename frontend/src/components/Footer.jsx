@@ -26,6 +26,7 @@ const Footer = () => {
       if (res.ok) {
         setStatus("SUCCESS");
         setEmail("");
+         
       } else {
         setStatus("ERROR");
       }
