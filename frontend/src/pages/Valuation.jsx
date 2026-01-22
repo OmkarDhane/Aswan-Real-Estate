@@ -13,7 +13,7 @@ const Valuation = () => {
 
       <div
         className="min-h-screen w-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/assets/valuation.webp')" }}
+        style={{ backgroundImage: "url('/assets/property-valuation.jpg')" }}
       >
         <div className="bg-black bg-opacity-40 min-h-screen w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -95,7 +95,7 @@ const Valuation = () => {
                 <button
                   type="submit"
                   disabled={state.submitting}
-                  className="bg-red-600 text-white py-3 rounded font-normal hover:bg-red-700 transition w-full"
+                  className="bg-black text-white py-3 rounded font-normal hover:bg-[#D4AF37] transition w-full"
                 >
                   {state.submitting ? "Sending..." : "SEND MESSAGE"}
                 </button>
@@ -103,11 +103,11 @@ const Valuation = () => {
 
               <div className="mt-6 sm:mt-8 text-sm text-gray-700">
                 By clicking Submit, you agree to our{" "}
-                <Link to="/terms-conditions" className="text-red-600 underline">
+                <Link to="/terms-conditions" className="text-black hover:text-[#D4AF37] underline">
                   Terms & Conditions
                 </Link>{" "}
                 and{" "}
-                <Link to="/privacy-policy" className="text-red-600 underline">
+                <Link to="/privacy-policy" className="text-black hover:text-[#D4AF37] underline">
                   Privacy Policy
                 </Link>.
               </div>
@@ -118,16 +118,17 @@ const Valuation = () => {
                   alt="Google Reviews"
                   className="h-7 sm:h-8"
                 /> */}
-                <span className="text-gray-900 text-xs sm:text-sm font-medium">
-                  Rated 4.7/5 from 1047+ Customer Reviews
-                </span>
+               
               </div>
             </div>
 
             {/* RIGHT SIDE */}
             <div className="text-white flex flex-col justify-center p-4 sm:p-6 lg:p-12">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-normal mb-4">
-                Espace Real Estate Agents in Dubai
+               
+	Aswan Real Estate Agents in Sharjah
+
+
               </h2>
 
               <p className="mb-6 text-gray-200 text-base sm:text-lg">
@@ -136,23 +137,23 @@ const Valuation = () => {
 
               <div className="space-y-6 sm:space-y-8 text-sm sm:text-base">
                 <div className="border border-white border-opacity-40 p-5 sm:p-8 rounded">
-                  <strong>90,000 registered buyers & tenants</strong>
+                  <strong>•	Sharjah-Focused Expertise</strong>
                   <p className="mt-2 text-gray-200">
-                    Your property gets maximum visibility.
+                    Deep local knowledge ensures your property is positioned correctly within the Sharjah market.
                   </p>
                 </div>
 
                 <div className="border border-white border-opacity-40 p-5 sm:p-6 rounded">
-                  <strong>Award-Winning Agency</strong>
+                  <strong>•	Thoughtful Property Presentation. </strong>
                   <p className="mt-2 text-gray-200">
-                    Leading real estate experts in Dubai since 2009.
+                   We market properties with care and attention to detail to maximize genuine interest.
                   </p>
                 </div>
 
                 <div className="border border-white border-opacity-40 p-5 sm:p-6 rounded">
-                  <strong>Expert Knowledge</strong>
+                  <strong>•	Clear Communication & Reliable Handling. </strong>
                   <p className="mt-2 text-gray-200">
-                    200+ RERA-certified brokers to assist you.
+                    A transparent process with consistent updates from listing to handover.
                   </p>
                 </div>
               </div>

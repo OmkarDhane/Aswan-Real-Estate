@@ -63,7 +63,7 @@ const Footer = () => {
   />
   <button
     type="submit"
-    className="bg-red-600 hover:bg-red-700 text-white uppercase tracking-widest text-sm sm:text-base font-semibold px-4 sm:px-6 py-3 w-full sm:w-auto transition"
+    className="bg-zinc-700 hover:bg-[#D4AF37] text-white uppercase tracking-widest text-sm sm:text-base font-semibold px-4 sm:px-6 py-3 w-full sm:w-auto transition"
   >
     Subscribe
   </button>
@@ -79,19 +79,19 @@ const Footer = () => {
 
           <p className="text-gray-500 text-xs sm:text-sm mt-3">
             By clicking Subscribe, you agree to our{" "}
-            <a href="/terms" className="underline hover:text-red-600">Terms</a>{" "}
+            <a href="/terms" className="underline hover:text-[#D4AF37]">Terms</a>{" "}
             and{" "}
-            <a href="/privacy" className="underline hover:text-red-600">Privacy Policy</a>.
+            <a href="/privacy" className="underline hover:text-[#D4AF37]">Privacy Policy</a>.
           </p>
         </div>
 
         {/* SOCIAL ICONS */}
         <div className="flex md:justify-end items-center gap-4 sm:gap-6 mt-6 md:mt-0">
-          <FaTwitter className="cursor-pointer transition hover:text-red-600 hover:scale-110 text-2xl sm:text-3xl" />
-          <FaFacebookF className="cursor-pointer transition hover:text-red-600 hover:scale-110 text-2xl sm:text-3xl" />
-          <FaYoutube className="cursor-pointer transition hover:text-red-600 hover:scale-110 text-2xl sm:text-3xl" />
-          <FaInstagram className="cursor-pointer transition hover:text-red-600 hover:scale-110 text-2xl sm:text-3xl" />
-          <FaLinkedinIn className="cursor-pointer transition hover:text-red-600 hover:scale-110 text-2xl sm:text-3xl" />
+          <FaTwitter className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+          <FaFacebookF className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+          <FaYoutube className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+          <FaInstagram className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+          <FaLinkedinIn className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
         </div>
       </div>
 
@@ -100,21 +100,22 @@ const Footer = () => {
 
         {/* LOGO */}
         <img 
-          src="/assets/logo2.jpg" 
+          src="/assets/l-w.png" 
+    
           alt="Aswan Real Estate Logo" 
           className="h-16 sm:h-20"
         />
 
         {/* LINKS */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-gray-400 text-xs sm:text-sm text-center sm:text-left">
-          <a href="/terms" className="hover:text-red-600">Terms & Conditions</a>
-          <a href="/privacy" className="hover:text-red-600">Privacy Policy</a>
-          <a href="/sitemap" className="hover:text-red-600">Sitemap</a>
+          <a href="/terms" className="hover:text-[#D4AF37]">Terms & Conditions</a>
+          <a href="/privacy" className="hover:text-[#D4AF37]">Privacy Policy</a>
+          <a href="/sitemap" className="hover:text-[#D4AF37]">Sitemap</a>
         </div>
 
         {/* DESIGN CREDIT */}
         <div className="text-gray-600 text-xs sm:text-sm text-center sm:text-right">
-          © {new Date().getFullYear()} Aswan Real Estate • Designed by <a href="https://actaldigital.com" className="text-red-600 font-semibold">ActalDigital</a>
+          © {new Date().getFullYear()} Aswan Real Estate • Designed by <a href="https://actaldigital.com" className="text-[#D4AF37] font-semibold">ActalDigital</a>
         </div>
       </div>
     </footer>

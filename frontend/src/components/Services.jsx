@@ -7,62 +7,60 @@ const Services = () => {
   const services = [
     {
       title: "Property Valuation",
-      desc: "We’ll give you an accurate sale and rental value of your property.",
-      img: "/assets/valuation.webp", 
+      desc: "we’ll help you find the accurate sale and rental value of your property.",
+      img: "/assets/property-valuation.jpg", 
       link: "/valuation",
       btn: "Book A Valuation",
     },
     {
       title: "Find a Property",
-      desc: "Browse the best properties with Dubai’s award-winning real estate agents.",
-      img: "/assets/findProperty.webp",
+      desc: "Browse the best Properties in Sharjah with our real estate agents.",
+      img: "/assets/find-a-property.jpg",
       link: "/for-rent",
       btn: "Property Search",
     },
     {
       title: "About us",
-      desc: "Dubai is home to opportunities for people looking to invest in property.",
+      desc: "Sharjah is home to opportunities for people looking to invest in property.",
       img: "/assets/offplan.webp",
       link: "/about-us",
       btn: "About us",
     },
     {
       title: "Property Management",
-      desc: "We offer a wide range of property management services in Dubai.",
-      img: "/assets/mangament.webp",
-      link: "/why-espace",
-      btn: "Property Management Packages",
+      desc: "we offer a wide range of property management services in Sharjah.",
+      img: "/assets/property-management.png",
+      link: "/property-management",
+      btn: "Management Packages",
     },
   ];
 
   return (
-    <section className="bg-[#f7f6f3] py-16 sm:py-20 font-[Poppins]">
+    <section className="bg-[#f4f4f4] py-16 sm:py-20 font-[Poppins]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
         
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between gap-8 mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-normal leading-snug max-w-xl">
-            Dubai <span className="text-red-500 italic">Real Estate Agency</span>
+          <h2 className="text-3xl sm:text-4xl font-light leading-snug max-w-xl text-black">
+            Sharjah <span className="text-[#D4AF37] italic font-normal">Real Estate Agency</span>
             <br /> Property Services
           </h2>
           <div className="max-w-xl text-gray-700 mt-4 lg:mt-0">
             <p className="leading-relaxed mb-4 text-sm sm:text-base">
-              Let us take the stress away and add value to your investment through our
-              comprehensive range of property services tailored to meet your unique
-              property needs.
+              Our comprehensive range of property services are designed to simplify ownership, reduce complexity, and enhance long-term value.
             </p>
             <Link
-              to="/why-espace"
-              className="text-gray-900 underline text-sm sm:text-base tracking-wide hover:text-red-500"
+              to="/about-us"
+              className="text-black font-normal underline text-sm sm:text-base tracking-wide hover:text-[#D4AF37] transition-colors"
             >
-              Why Choose Espace?
+              Why Choose Aswan?
             </Link>
           </div>
         </div>
 
         {/* Slider */}
         <Swiper
-          spaceBetween={16}
+          spaceBetween={20}
           slidesPerView={1}
           breakpoints={{
             640: { slidesPerView: 1 },
@@ -70,33 +68,36 @@ const Services = () => {
             1024: { slidesPerView: 3 },
             1280: { slidesPerView: 4 },
           }}
+          className="pb-10"
         >
           {services.map((s, i) => (
             <SwiperSlide key={i}>
-              <div className="rounded-lg group cursor-pointer bg-white p-4 sm:p-6 shadow hover:shadow-lg transition">
+              <div className="rounded-xl group cursor-pointer bg-white p-4 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100">
                 
-                {/* Image */}
-                <div className="h-64 sm:h-72 w-full overflow-hidden rounded-lg mb-4">
+                {/* Image Container */}
+                <div className="h-64 sm:h-72 w-full overflow-hidden rounded-lg mb-5">
                   <img
                     src={s.img}
                     alt={s.title}
-                    className="h-full w-full object-cover group-hover:scale-105 transition duration-300"
+                    className="h-full w-full object-cover group-hover:scale-110 transition duration-700"
                   />
                 </div>
 
-                {/* Title */}
-                <h3 className="text-lg sm:text-base font-semibold">{s.title}</h3>
+                {/* Content */}
+                <div className="px-2 pb-2">
+                  <h3 className="text-lg font-normal text-black uppercase tracking-tight">{s.title}</h3>
+                  <p className="mt-2 text-gray-500 text-sm leading-relaxed h-12 line-clamp-2">
+                    {s.desc}
+                  </p>
 
-                {/* Description */}
-                <p className="mt-2 text-gray-600 text-sm sm:text-sm leading-relaxed">{s.desc}</p>
-
-                {/* Link */}
-                <Link
-                  to={s.link}
-                  className="inline-block mt-3 sm:mt-4 text-sm sm:text-base underline font-medium text-gray-900 hover:text-red-500"
-                >
-                  {s.btn}
-                </Link>
+                  {/* Button/Link - Gold Hover */}
+                  <Link
+                    to={s.link}
+                    className="inline-block mt-4 text-sm font-bold uppercase tracking-widest border-b-2 border-[#D4AF37] pb-1 text-black hover:text-[#D4AF37] hover:border-black transition-all duration-300"
+                  >
+                    {s.btn}
+                  </Link>
+                </div>
               </div>
             </SwiperSlide>
           ))}

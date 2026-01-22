@@ -41,14 +41,14 @@ const MenuPage = () => {
       <div className="flex justify-between items-center px-4 sm:px-10 pt-6 sm:pt-10">
         <div className="cursor-pointer" onClick={() => navigate("/")}>
           <img
-            src="/src/assets/logo2.jpg"
+            src="/assets/l-w.png"
             alt="ESPACE Real Estate"
-            className="h-16 sm:h-20 w-auto"
+            className="h-16 sm:h-25 w-auto"
           />
         </div>
 
         {/* CLOSE BUTTON */}
-        <button onClick={handleClose} className="text-3xl sm:text-4xl font-light">
+        <button onClick={handleClose} className="text-3xl sm:text-4xl font-light hover:text-[#D4AF37] transition-colors">
           ×
         </button>
       </div>
@@ -60,11 +60,11 @@ const MenuPage = () => {
           {leftMenuItems.map((item) => (
             <div
               key={item}
-              className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-gray-300 transition"
+              className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
               onClick={() => menuRoutes[item] && navigate(menuRoutes[item])}
             >
               <span>{item}</span>
-              <span className="text-gray-500 sm:text-gray-300">+</span>
+              <span className="text-gray-500 sm:text-gray-300 hover:text-[#D4AF37]">+</span>
             </div>
           ))}
         </div>
@@ -72,35 +72,35 @@ const MenuPage = () => {
         {/* RIGHT COLUMN */}
         <div className="flex flex-col gap-6 sm:gap-14 mt-4 sm:mt-2">
           <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-gray-300 transition"
+            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37]  transition"
             onClick={() => navigate("/knowledge-centre")}
           >
             <span>Knowledge Centre</span>
-            <span className="text-gray-500 sm:text-gray-300">+</span>
+            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
           </div>
 
           <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-gray-300 transition"
+            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
             onClick={() => navigate("/video")}
           >
             <span>Video</span>
-            <span className="text-gray-500 sm:text-gray-300">+</span>
+            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
           </div>
 
           <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-gray-300 transition"
+            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
             onClick={() => navigate("/about-us")}
           >
             <span>About Us</span>
-            <span className="text-gray-500 sm:text-gray-300">+</span>
+            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
           </div>
 
           <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-gray-300 transition"
+            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
             onClick={() => navigate("/contact")}
           >
             <span>Contact</span>
-            <span className="text-gray-500 sm:text-gray-300">+</span>
+            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
           </div>
         </div>
       </div>
