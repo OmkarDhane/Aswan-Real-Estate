@@ -14,7 +14,7 @@ const MarketReport = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[450px]">
         
         {/* Content Box */}
-        <div className="lg:col-span-7 bg-black bg-opacity-80 text-white p-6 sm:p-10 rounded-lg shadow-lg flex flex-col justify-center h-full mx-auto lg:ml-4">
+        <div className="lg:col-span-7 justify-center bg-black bg-opacity-80 text-white p-6 sm:p-10 rounded-lg shadow-lg flex flex-col justify-center h-full mx-auto lg:ml-4">
           
           <h2 className="text-3xl sm:text-4xl font-semibold leading-tight">
             Sharjah Real Estate

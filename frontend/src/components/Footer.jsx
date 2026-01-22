@@ -110,7 +110,7 @@ const Footer = () => {
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-gray-400 text-xs sm:text-sm text-center sm:text-left">
           <a href="/terms" className="hover:text-[#D4AF37]">Terms & Conditions</a>
           <a href="/privacy" className="hover:text-[#D4AF37]">Privacy Policy</a>
-          <a href="/sitemap" className="hover:text-[#D4AF37]">Sitemap</a>
+          <a href="/sitemap" className="hover:text-[#D4AF37]">Disclaimer</a>
         </div>
 
         {/* DESIGN CREDIT */}

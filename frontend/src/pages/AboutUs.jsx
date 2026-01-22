@@ -1,37 +1,38 @@
 import React from "react";
 import Footer from "../components/Footer"; 
 import { Link } from "react-router-dom";
+// Local import ensures the image is bundled correctly
+import teamBg from "../assets/aswan-team-bg.jpg";
 
 const AboutUs = () => {
   return (
-    <div className="w-full font-[Poppins]">
+    <div className="w-full font-[Poppins] bg-[#F7F7F7]">
 
       {/* ---------------- HERO SECTION ---------------- */}
       <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[90vh]">
-        {/* Background Image */}
-        <img
-          src="/assets/AboutUs.webp"
-          alt="Hero"
-          className="w-full h-full object-cover"
+        {/* Background Image using the imported teamBg */}
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{ backgroundImage: `url(${teamBg})` }}
         />
 
-        {/* Overlay with semi-transparent black and content */}
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center">
-          <div className="px-6 sm:px-10 md:px-16 text-white max-w-full sm:max-w-xl">
-            <p className="uppercase tracking-wide text-xs sm:text-sm mb-2">
-              Real Estate Agency in Dubai
+        {/* Overlay with Gold/Black accent */}
+        <div className="absolute top-0 left-0 w-full h-full bg-black/65 flex items-center">
+          <div className="px-6 sm:px-10 md:px-16 text-white max-w-full sm:max-w-2xl animate-fadeIn">
+            <p className="uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3 text-[#D4AF37] font-semibold">
+              Real Estate Agency in Sharjah
             </p>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-normal leading-snug mb-4 sm:mb-6">
-              Welcome to Espace, an award-winning real estate agency in Dubai fulfilling our clients' property needs since 2009.
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight mb-6 sm:mb-8">
+              Welcome to <span className="text-[#D4AF37] italic font-normal">Aswan</span>, a premier real estate agency
             </h1>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <button className="bg-red-600 px-5 py-2 sm:px-6 sm:py-3 rounded text-white">
-                Espace Story
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="bg-[#D4AF37] px-6 py-3 rounded-sm text-black font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all duration-300 shadow-lg">
+                Our Story
               </button>
               <Link to="/contact">
-                <button className="border border-white px-5 py-2 sm:px-6 sm:py-3 rounded text-white hover:bg-red-600 hover:border-red-600 transition">
+                <button className="border border-white px-6 py-3 rounded-sm text-white hover:bg-[#D4AF37] hover:border-[#D4AF37] hover:text-black transition-all duration-300 uppercase tracking-widest text-[10px] font-bold">
                   Contact Us
                 </button>
               </Link>
@@ -40,149 +41,204 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* ---------------- OUR STORY SECTION ---------------- */}
-      <section className="max-w-6xl mx-auto px-6 py-16 sm:py-20 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
-        <div className="col-span-2">
-          <h2 className="text-2xl sm:text-3xl font-normal mb-4 sm:mb-6">Our Story</h2>
-          <p className="text-gray-700 leading-7 mb-6 sm:mb-10 max-w-full sm:max-w-4xl">
-            Espace Real Estate was born in 2009 as a small property services company 
-            with a goal to bring UK-style estate agency standards to Dubai. Today we 
-            are a 150-strong team who are multilingual and specialise in transacting 
-            all types of property in Dubai and making sure our clients enjoy a smooth 
-            and transparent process tailored to their needs.
-          </p>
-
-          {/* Accordions */}
-          <div className="border-t border-b py-5">
-            <details className="group">
-              <summary className="cursor-pointer text-lg sm:text-xl font-medium flex justify-between items-center">
-                <span>An expert team you can trust</span>
-                <span className="text-gray-500 group-open:rotate-180 transition">&#9660;</span>
-              </summary>
-
-              <p className="text-gray-600 mt-4 leading-7 text-sm sm:text-base">
-               As a Dubai real estate company we have many goals set out from the beginning whenever we complete a service for our client. We always make sure that there is an honest, transparent, relationship with our clients. We work hard to keep you informed right through to the point of sale or purchase.
-              </p>
-            </details>
-          </div>
-
-          <div className="border-b py-5">
-            <details className="group">
-              <summary className="cursor-pointer text-lg sm:text-xl font-medium flex justify-between items-center">
-                <span>Why people choose Espace</span>
-                <span className="text-gray-500 group-open:rotate-180 transition">&#9660;</span>
-              </summary>
-
-              <p className="text-gray-600 mt-4 leading-7 text-sm sm:text-base">
-                Contacting our agents today you will find a diligent, professional, diverse team, ready to cater to your every need on the property market. We won’t rest until you are 100 percent satisfied with the service we provide. Our reputation as the leading real estate agency in Dubai didn’t happen overnight. We worked hard to ensure that our clients could trust the service we offer by hiring the best people for the job and you can too.
-              </p>
-            </details>
-          </div>
-        </div>
-
-        {/* Right Section */}
-        <div className="col-span-1 mt-6 md:mt-0">
-          <h3 className="text-xl sm:text-2xl font-normal mb-4 sm:mb-6">Explore Espace</h3>
-
-          <ul className="flex flex-col gap-3 text-gray-700">
-            <li>
-              <a href="/team" className="flex items-center gap-2 hover:text-red-600 transition">
-                <span className="w-3 h-3 border border-gray-500 rounded-full"></span>
-                MEET THE TEAM
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      {/* ---------------- STATS ---------------- */}
-      <section className="bg-[#F6F6F0] py-12 sm:py-16">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 text-center px-6 sm:px-0">
-          <div className="border-r border-gray-300 pr-4 sm:pr-8 last:border-r-0">
-            <h3 className="text-3xl sm:text-4xl font-semibold mb-1">2009</h3>
-            <p className="text-gray-500 text-xs sm:text-sm tracking-widest uppercase">THE YEAR WE WERE BORN</p>
-          </div>
-          <div className="border-r border-gray-300 pr-4 sm:pr-8 last:border-r-0">
-            <h3 className="text-3xl sm:text-4xl font-semibold mb-1">51000</h3>
-            <p className="text-gray-500 text-xs sm:text-sm tracking-widest uppercase">REGISTERED BUYERS</p>
-          </div>
-          <div className="border-r border-gray-300 pr-4 sm:pr-8 last:border-r-0">
-            <h3 className="text-3xl sm:text-4xl font-semibold mb-1">60</h3>
-            <p className="text-gray-500 text-xs sm:text-sm tracking-widest uppercase">COMMUNITIES COVERED</p>
-          </div>
-          <div className="pr-4 sm:pr-8">
-            <h3 className="text-3xl sm:text-4xl font-semibold mb-1">270</h3>
-            <p className="text-gray-500 text-xs sm:text-sm tracking-widest uppercase">NUMBER OF EMPLOYEES</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- MEET TEAM ---------------- */}
-      <section className="max-w-6xl mx-auto px-6 py-16 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-normal mb-8 sm:mb-10">Meet our team</h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-          {[
-            { name: "John Lyons", role: "Managing Director", img: "/assets/team1.webp" },
-            { name: "Lee Malcolm", role: "HR Director", img: "/assets/team2.webp" },
-            { name: "Gil Van Gelder", role: "Director of Residential Brokerage", img: "/assets/team3.webp" },
-            { name: "Matthew Montgomery", role: "Sales Director", img: "/assets/team4.webp" },
-          ].map((member, i) => (
-            <div key={i} className="text-center group overflow-hidden rounded-lg shadow-md cursor-pointer">
-              <img
-                src={member.img}
-                alt={member.name}
-                className="w-full h-64 sm:h-72 object-cover object-top rounded-lg transform transition duration-500 group-hover:scale-105"
-              />
-              <h3 className="mt-4 font-normal text-lg sm:text-base">{member.name}</h3>
-              <p className="text-gray-600 text-sm sm:text-xs">{member.role}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------- CONTACT FORM ---------------- */}
-      <section className="bg-[#F6F6F0] py-12 sm:py-20">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
-          
-          {/* Left Text Section */}
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-normal mb-4 sm:mb-6 leading-snug">
-              We’re always <span className="text-red-600 italic">here to help.</span><br />
-              Book a call with our team
+      {/* ---------------- OUR STORY SECTION (Light Grey Background) ---------------- */}
+      <section className="w-full bg-[#F7F7F7] py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-20">
+          <div className="col-span-2">
+            <h2 className="text-3xl sm:text-4xl font-light mb-6 text-black uppercase tracking-tighter">
+              Our <span className="text-[#D4AF37] italic">Philosophy</span>
             </h2>
-            <p className="text-gray-700 max-w-full sm:max-w-md leading-relaxed mt-3 text-sm sm:text-base">
-              As a truly customer-centric real estate agency, we offer a range of related services that are designed to make your property journey stress-free and successful from start to end.
+            <p className="text-gray-600 leading-relaxed mb-8 sm:mb-12 text-lg font-light">
+              Aswan Real Estate was born in 2009 with a vision to integrate elite 
+              estate agency standards into the heart of Sharjah. Today, we 
+              are a strong team of multilingual specialists transacting 
+              all types of property, ensuring our clients enjoy a smooth 
+              and transparent process tailored to their unique investment needs.
             </p>
+
+            {/* Accordions (Kept White for Contrast) */}
+            <div className="bg-white border border-gray-100 py-6 hover:bg-gray-50 transition-colors px-6 rounded-t-sm shadow-sm">
+              <details className="group">
+                <summary className="cursor-pointer text-lg sm:text-xl font-medium flex justify-between items-center list-none outline-none">
+                  <span className="group-open:text-[#D4AF37] transition-colors">Integrity and Trust</span>
+                  <span className="text-[#D4AF37] group-open:rotate-180 transition-transform duration-300">&#9660;</span>
+                </summary>
+                <p className="text-gray-500 mt-5 leading-7 text-sm sm:text-base font-light border-l-2 border-[#D4AF37] pl-4">
+                  In the Sharjah real estate market, we prioritize honest and transparent relationships. From initial inquiry to final handover, we keep our clients informed every step of the way.
+                </p>
+              </details>
+            </div>
+
+            <div className="bg-white border border-t-0 border-gray-100 py-6 hover:bg-gray-50 transition-colors px-6 rounded-b-sm shadow-sm">
+              <details className="group">
+                <summary className="cursor-pointer text-lg sm:text-xl font-medium flex justify-between items-center list-none outline-none">
+                  <span className="group-open:text-[#D4AF37] transition-colors">Why Aswan is the Choice</span>
+                  <span className="text-[#D4AF37] group-open:rotate-180 transition-transform duration-300">&#9660;</span>
+                </summary>
+                <p className="text-gray-500 mt-5 leading-7 text-sm sm:text-base font-light border-l-2 border-[#D4AF37] pl-4">
+                  Our team is diligent, professional, and diverse. We understand that property decisions are life-changing, and we work tirelessly to ensure 100% satisfaction through expert market insight.
+                </p>
+              </details>
+            </div>
           </div>
 
-          {/* Right Form Section */}
-          <form className="flex flex-col gap-4 max-w-full sm:max-w-md">
-            <label className="text-gray-700 text-sm font-medium">Name*</label>
-            <input type="text" placeholder="Your Name" className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600" required />
-            
-            <label className="text-gray-700 text-sm font-medium">Email Address*</label>
-            <input type="email" placeholder="Email Address" className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600" required />
-            
-            <label className="text-gray-700 text-sm font-medium">Telephone*</label>
-            <input type="tel" placeholder="Phone Number" className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-600" required />
-            
-            <p className="text-xs text-gray-500 mb-2">
-              By clicking Submit, you agree to our{" "}
-              <Link to="/terms" className="underline hover:text-red-600">Terms & Conditions</Link> and{" "}
-              <Link to="/privacy" className="underline hover:text-red-600">Privacy Policy</Link>.
-            </p>
-            <button 
-              type="submit"
-              className="bg-red-600 text-white py-3 rounded border border-red-600 hover:bg-white hover:text-red-600 transition font-normal tracking-widest"
-            >
-              SUBMIT
-            </button>
-          </form>
+          {/* Sidebar */}
+          <div className="col-span-1 border-l border-gray-200 pl-8">
+            <h3 className="text-xs font-bold text-black mb-6 uppercase tracking-[0.2em]">Quick Links</h3>
+            <ul className="flex flex-col gap-5">
+              <li>
+                <Link to="/team" className="group flex items-center gap-3 text-gray-500 hover:text-black transition-all">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] group-hover:scale-150 transition-transform"></span>
+                  <span className="text-[10px] font-bold tracking-widest uppercase">Expert Team</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/for-sale" className="group flex items-center gap-3 text-gray-500 hover:text-black transition-all">
+                  <span className="w-1.5 h-1.5 rounded-full bg-black group-hover:bg-[#D4AF37] transition-colors"></span>
+                  <span className="text-[10px] font-bold tracking-widest uppercase">Available Listings</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      {/* ---------------- FOOTER ---------------- */}
+      {/* ---------------- STATS SECTION (Contrast Black) ---------------- */}
+      <section className="bg-[#0A0A0A] py-16 sm:py-24 text-white">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-y-12 text-center">
+          <div className="border-r border-[#D4AF37]/20 last:border-r-0">
+            <h3 className="text-4xl sm:text-5xl font-light text-[#D4AF37] mb-2">2009</h3>
+            <p className="text-gray-400 text-[9px] tracking-[0.3em] uppercase">Established</p>
+          </div>
+          <div className="border-r border-[#D4AF37]/20 last:border-r-0">
+            <h3 className="text-4xl sm:text-5xl font-light text-[#D4AF37] mb-2">51K+</h3>
+            <p className="text-gray-400 text-[9px] tracking-[0.3em] uppercase">Active Buyers</p>
+          </div>
+          <div className="border-r border-[#D4AF37]/20 last:border-r-0">
+            <h3 className="text-4xl sm:text-5xl font-light text-[#D4AF37] mb-2">60+</h3>
+            <p className="text-gray-400 text-[9px] tracking-[0.3em] uppercase">Communities</p>
+          </div>
+          <div className="last:border-r-0">
+            <h3 className="text-4xl sm:text-5xl font-light text-[#D4AF37] mb-2">270+</h3>
+            <p className="text-gray-400 text-[9px] tracking-[0.3em] uppercase">Professionals</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- TEAM PREVIEW (Light Grey Background) ---------------- */}
+      <section className="w-full bg-[#F7F7F7] py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <h2 className="text-3xl sm:text-4xl font-light text-black uppercase tracking-tighter">
+              Executive <span className="text-[#D4AF37] italic">Management</span>
+            </h2>
+            <Link to="/team" className="text-[#D4AF37] text-xs font-bold uppercase tracking-widest border-b border-[#D4AF37] pb-1 hover:text-black hover:border-black transition-all mt-4 md:mt-0">
+              View All Staff
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { name: "John Lyons", role: "Managing Director", img: "/assets/team1.webp" },
+              { name: "Lee Malcolm", role: "HR Director", img: "/assets/team2.webp" },
+              { name: "Gil Van Gelder", role: "Director of Brokerage", img: "/assets/team3.webp" },
+              { name: "Matthew Montgomery", role: "Sales Director", img: "/assets/team4.webp" },
+            ].map((member, i) => (
+              <div key={i} className="group cursor-pointer">
+                <div className="overflow-hidden rounded-sm mb-4 aspect-[3/4] shadow-md">
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 transform transition duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <h3 className="font-bold text-black uppercase tracking-widest text-[11px]">{member.name}</h3>
+                <p className="text-[#D4AF37] text-[10px] italic font-medium">{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- CONTACT FORM SECTION (Light Grey Background) ---------------- */}
+<section className="bg-[#F7F7F7] py-16 sm:py-24 border-t border-gray-200">
+  <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
+    <div className="flex flex-col justify-center">
+      <h2 className="text-3xl sm:text-4xl font-light text-black mb-6 leading-tight uppercase">
+        Expert <br />
+        <span className="text-[#D4AF37] italic font-normal">Consultation</span>
+      </h2>
+      <p className="text-gray-500 leading-relaxed font-light text-base mb-8">
+        Whether you are looking to sell, buy, or rent, our team provides data-driven insights to ensure your success in the Sharjah market.
+      </p>
+      <div className="flex items-center gap-4">
+        <div className="w-10 h-[1px] bg-[#D4AF37]"></div>
+        <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-black">Aswan Standards</span>
+      </div>
+    </div>
+
+    {/* Form - Integrated with Formspree */}
+    <form 
+      action="https://formspree.io/f/xdkqzdbk" 
+      method="POST"
+      className="bg-white p-8 sm:p-10 shadow-2xl rounded-sm border-t-2 border-[#D4AF37]"
+    >
+      <div className="space-y-6">
+        <div className="relative">
+          <label className="text-black text-[15px] font-bold uppercase tracking-widest mb-1 block">Full Name</label>
+          <input 
+            type="text" 
+            name="name"
+            className="w-full border-b border-gray-200 py-2 focus:border-[#D4AF37] outline-none bg-transparent transition-colors text-sm" 
+            placeholder="Enter your name"
+            required 
+          />
+        </div>
+        
+        <div className="relative">
+          <label className="text-black text-[15px] font-bold uppercase tracking-widest mb-1 block">Email Address</label>
+          <input 
+            type="email" 
+            name="email"
+            className="w-full border-b border-gray-200 py-2 focus:border-[#D4AF37] outline-none bg-transparent transition-colors text-sm" 
+            placeholder="email@example.com"
+            required 
+          />
+        </div>
+        
+        <div className="relative">
+          <label className="text-black text-[15px] font-bold uppercase tracking-widest mb-1 block">Contact Number</label>
+          <input 
+            type="tel" 
+            name="phone"
+            className="w-full border-b border-gray-200 py-2 focus:border-[#D4AF37] outline-none bg-transparent transition-colors text-sm" 
+            placeholder="+971 -- --- ----"
+            required 
+          />
+        </div>
+
+        {/* Optional: Message field add kela aahe better clarity sathi */}
+        <div className="relative">
+          <label className="text-black text-[15px] font-bold uppercase tracking-widest mb-1 block">Message (Optional)</label>
+          <textarea 
+            name="message"
+            rows="2"
+            className="w-full border-b border-gray-200 py-2 focus:border-[#D4AF37] outline-none bg-transparent transition-colors text-sm resize-none" 
+            placeholder="How can we help?"
+          ></textarea>
+        </div>
+        
+        <button 
+          type="submit"
+          className="w-full bg-black text-[#D4AF37] py-4 font-bold tracking-[0.2em] uppercase text-[12px] hover:bg-[#D4AF37] hover:text-black transition-all duration-500 mt-4 shadow-lg"
+        >
+          Request a Call Back
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
       <Footer />
     </div>
   );

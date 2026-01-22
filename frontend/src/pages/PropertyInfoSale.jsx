@@ -115,16 +115,16 @@ const PropertyInfoSale = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
           <h1 className="text-2xl md:text-3xl font-semibold uppercase">{property.title}</h1>
           <div className="flex gap-3">
-            <button onClick={() => setShowCallPopup(true)} className="px-6 py-2 border border-black flex items-center gap-2 hover:bg-black hover:text-white transition-all uppercase text-sm font-bold"><FaPhoneAlt /> Call</button>
-            <button onClick={() => setShowEmailPopup(true)} className="px-6 py-2 border border-black flex items-center gap-2 hover:bg-black hover:text-white transition-all uppercase text-sm font-bold"><FaEnvelope /> Email</button>
-            <a href="https://wa.me/97143069999" target="_blank" rel="noreferrer" className="px-6 py-2 border border-green-600 text-green-600 flex items-center gap-2 hover:bg-green-600 hover:text-white transition-all uppercase text-sm font-bold"><FaWhatsapp /> WhatsApp</a>
+            <button onClick={() => setShowCallPopup(true)} className="px-6 py-2 border border-black flex items-center gap-2 hover:bg-[#D4AF37] hover:text-white transition-all uppercase text-sm font-bold"><FaPhoneAlt /> Call</button>
+            <button onClick={() => setShowEmailPopup(true)} className="px-6 py-2 border border-black flex items-center gap-2 hover:bg-[#D4AF37] hover:text-white transition-all uppercase text-sm font-bold"><FaEnvelope /> Email</button>
+            <a href="https://wa.me/971555737865" target="_blank" rel="noreferrer" className="px-6 py-2 border border-black text-black flex items-center gap-2 hover:bg-[#D4AF37] hover:text-white transition-all uppercase text-sm font-bold"><FaWhatsapp /> WhatsApp</a>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-12 py-8 border-y border-gray-100 bg-gray-50/50 rounded-lg px-4">
           <div className="flex flex-col gap-1">
             <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Price</p>
-            <p className="text-red-600 font-bold text-xl md:text-2xl">AED {property.price?.toLocaleString()}</p>
+            <p className="text-black font-normal text-xl md:text-2xl">AED {property.price?.toLocaleString()}</p>
           </div>
           <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
             <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Location</p>
@@ -146,7 +146,7 @@ const PropertyInfoSale = () => {
 
         <div className="mb-16">
           <h2 className="text-xl md:text-2xl font-bold mb-4 uppercase tracking-tight">Description</h2>
-          <p className="text-gray-600 whitespace-pre-line leading-relaxed italic">
+          <p className="text-gray-600 leading-relaxed italic">
             {fullDescriptionText}
           </p>
         </div>
@@ -187,7 +187,7 @@ const PropertyInfoSale = () => {
               </div>
               <div className="pt-6">
                 <p className="text-gray-400 text-xs uppercase font-bold mb-1 tracking-widest">Monthly Payment:</p>
-                <p className="text-red-600 text-5xl font-medium tracking-tighter">AED {monthlyPayment.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
+                <p className="text-[#D4AF37] text-5xl font-medium tracking-tighter">AED {monthlyPayment.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
               </div>
             </div>
           </div>
@@ -214,7 +214,7 @@ const PropertyInfoSale = () => {
                 defaultValue={`I am interested in ${property.title} for Sale.`}
                 required 
               />
-              <button className="w-full bg-black text-white py-5 font-bold uppercase hover:bg-red-600 transition-all tracking-[3px] mt-4 text-sm">Send Inquiry</button>
+              <button className="w-full bg-black text-white py-5 font-bold uppercase hover:bg-[#D4AF37] transition-all tracking-[3px] mt-4 text-sm">Send Inquiry</button>
             </form>
           </div>
         </div>
@@ -268,7 +268,7 @@ const PropertyInfoSale = () => {
               <input className="w-full border-b p-3 outline-none focus:border-red-600 uppercase text-sm" name="name" placeholder="Your Name" required />
               <input className="w-full border-b p-3 outline-none focus:border-red-600 uppercase text-sm" type="email" name="email" placeholder="Your Email" required />
               <textarea className="w-full border-b p-3 outline-none focus:border-red-600 uppercase text-sm" name="message" rows="4" defaultValue={`Requesting info for: ${property.title}`} required />
-              <button className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-red-600 transition-all">Submit</button>
+              <button className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-all">Submit</button>
             </form>
           </div>
         </div>
@@ -279,11 +279,11 @@ const PropertyInfoSale = () => {
           <div className="bg-white w-full max-w-xs p-10 text-center relative shadow-2xl border-b-4 border-red-600">
             <button onClick={() => setShowCallPopup(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black"><FaTimes /></button>
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
-               <FaPhoneAlt className="text-red-600 text-2xl" />
+               <FaPhoneAlt className="text-black text-2xl" />
             </div>
             <h2 className="text-xl font-bold mb-2 uppercase tracking-widest">Call Now</h2>
-            <p className="text-gray-500 mb-8 font-medium tracking-tight">+971 4 306 9999</p>
-            <a href="tel:+97143069999" className="inline-block w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-red-600 transition-all">Call Now</a>
+            <p className="text-gray-500 mb-8 font-medium tracking-tight">+971 55 573 7865</p>
+            <a href="tel:+971555737865" className="inline-block w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-all">Call Now</a>
           </div>
         </div>
       )}

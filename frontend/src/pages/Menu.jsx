@@ -5,26 +5,36 @@ const MenuPage = () => {
   const [openSearch, setOpenSearch] = useState(false);
   const navigate = useNavigate();
 
+  // Menu Routes Mapping
   const menuRoutes = {
-    Buy: "/for-rent",
-    Sell: "/for-sale",
-    Rent: "/for-rent",
-    Landlord: "/contact",
+    "Buy": "/for-sale",
+    "Sell": "/contact",
+    "Rent": "/for-rent",
+    "Landlord": "/contact",
     "Property Management": "/contact",
-    Mortgages: "/contact",
-    "Holiday Homes": "/contact",
-    Careers: "/contact",
+    "Mortgages": "/contact",
+    "Knowledge Centre": "/knowledge-centre",
+    "Video": "/video",
+    "About Us": "/about-us",
+    "Contact": "/contact",
   };
 
+  // Left side che 5 items
   const leftMenuItems = [
     "Buy",
     "Sell",
     "Rent",
     "Landlord",
     "Property Management",
+  ];
+
+  // Right side che 5 items
+  const rightMenuItems = [
     "Mortgages",
-    "Holiday Homes",
-    "Careers",
+    "Knowledge Centre",
+    "Video",
+    "About Us",
+    "Contact",
   ];
 
   // Close menu function
@@ -42,7 +52,7 @@ const MenuPage = () => {
         <div className="cursor-pointer" onClick={() => navigate("/")}>
           <img
             src="/assets/l-w.png"
-            alt="ESPACE Real Estate"
+            alt="Aswan Real Estate"
             className="h-16 sm:h-25 w-auto"
           />
         </div>
@@ -54,55 +64,36 @@ const MenuPage = () => {
       </div>
 
       {/* MAIN MENU */}
-      <div className="mt-10 sm:mt-20 px-4 sm:px-20 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-20 text-xl sm:text-2xl">
-        {/* LEFT COLUMN */}
+      <div className="mt-10 sm:mt-20 px-4 sm:px-20 grid grid-cols-1 sm:grid-cols-2 gap-x-20 gap-y-4 sm:gap-y-8 text-xl sm:text-2xl">
+        
+        {/* LEFT COLUMN (5 ITEMS) */}
         <div className="flex flex-col gap-4 sm:gap-8">
           {leftMenuItems.map((item) => (
             <div
               key={item}
-              className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
+              className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition group"
               onClick={() => menuRoutes[item] && navigate(menuRoutes[item])}
             >
               <span>{item}</span>
-              <span className="text-gray-500 sm:text-gray-300 hover:text-[#D4AF37]">+</span>
+              <span className="text-gray-500 group-hover:text-[#D4AF37]">+</span>
             </div>
           ))}
         </div>
 
-        {/* RIGHT COLUMN */}
-        <div className="flex flex-col gap-6 sm:gap-14 mt-4 sm:mt-2">
-          <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37]  transition"
-            onClick={() => navigate("/knowledge-centre")}
-          >
-            <span>Knowledge Centre</span>
-            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
-          </div>
-
-          <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
-            onClick={() => navigate("/video")}
-          >
-            <span>Video</span>
-            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
-          </div>
-
-          <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
-            onClick={() => navigate("/about-us")}
-          >
-            <span>About Us</span>
-            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
-          </div>
-
-          <div
-            className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition"
-            onClick={() => navigate("/contact")}
-          >
-            <span>Contact</span>
-            <span className="text-gray-500 sm:text-gray-500 hover:text-[#D4AF37]">+</span>
-          </div>
+        {/* RIGHT COLUMN (5 ITEMS) */}
+        <div className="flex flex-col gap-4 sm:gap-8">
+          {rightMenuItems.map((item) => (
+            <div
+              key={item}
+              className="flex justify-between cursor-pointer px-2 sm:px-0 py-2 sm:py-0 hover:text-[#D4AF37] transition group"
+              onClick={() => menuRoutes[item] && navigate(menuRoutes[item])}
+            >
+              <span>{item}</span>
+              <span className="text-gray-500 group-hover:text-[#D4AF37]">+</span>
+            </div>
+          ))}
         </div>
+
       </div>
     </div>
   );

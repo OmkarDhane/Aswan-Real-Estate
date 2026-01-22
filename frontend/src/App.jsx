@@ -29,7 +29,7 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import Menu from "./pages/Menu";
 
-import TeamPage from "./components/TeamPage";
+// import TeamPage from "./components/TeamPage";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -61,7 +61,7 @@ const App = () => {
         />
 
         {/* TEAM PAGE */}
-        <Route path="/team" element={<TeamPage />} />
+        {/* <Route path="/team" element={<TeamPage />} /> */}
 
         {/* PROPERTY DETAILS */}
         <Route path="/property/:id" element={<PropertyDetails />} />

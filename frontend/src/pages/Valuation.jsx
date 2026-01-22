@@ -103,11 +103,11 @@ const Valuation = () => {
 
               <div className="mt-6 sm:mt-8 text-sm text-gray-700">
                 By clicking Submit, you agree to our{" "}
-                <Link to="/terms-conditions" className="text-black hover:text-[#D4AF37] underline">
+                <Link to="/terms" className="text-black hover:text-[#D4AF37] underline">
                   Terms & Conditions
                 </Link>{" "}
                 and{" "}
-                <Link to="/privacy-policy" className="text-black hover:text-[#D4AF37] underline">
+                <Link to="/privacy" className="text-black hover:text-[#D4AF37] underline">
                   Privacy Policy
                 </Link>.
               </div>

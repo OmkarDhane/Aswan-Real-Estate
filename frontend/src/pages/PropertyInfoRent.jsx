@@ -126,9 +126,9 @@ const PropertyInfoRent = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
           <h1 className="text-2xl md:text-3xl font-semibold uppercase">{property.title}</h1>
           <div className="flex gap-3">
-            <button onClick={() => setShowCallPopup(true)} className="px-6 py-2 border border-black font-bold text-sm uppercase flex items-center gap-2 hover:bg-black hover:text-white transition-all"><FaPhoneAlt /> Call</button>
-            <button onClick={() => setShowEmailPopup(true)} className="px-6 py-2 border border-black font-bold text-sm uppercase flex items-center gap-2 hover:bg-black hover:text-white transition-all"><FaEnvelope /> Email</button>
-            <a href="https://wa.me/97143069999" target="_blank" rel="noreferrer" className="px-6 py-2 border border-green-600 text-green-600 font-bold text-sm uppercase flex items-center gap-2 hover:bg-green-600 hover:text-white transition-all"><FaWhatsapp /> WhatsApp</a>
+            <button onClick={() => setShowCallPopup(true)} className="px-6 py-2 border border-black font-bold text-sm uppercase flex items-center gap-2 hover:bg-[#D4AF37] hover:text-white transition-all"><FaPhoneAlt /> Call</button>
+            <button onClick={() => setShowEmailPopup(true)} className="px-6 py-2 border border-black font-bold text-sm uppercase flex items-center gap-2 hover:bg-[#D4AF37] hover:text-white transition-all"><FaEnvelope /> Email</button>
+            <a href="https://wa.me/971555737865" target="_blank" rel="noreferrer" className="px-6 py-2 border border-green-600 text-green-600 font-bold text-sm uppercase flex items-center gap-2 hover:bg-green-600 hover:text-white transition-all"><FaWhatsapp /> WhatsApp</a>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ const PropertyInfoRent = () => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-12 py-8 border-y border-gray-100 bg-gray-50/50 rounded-lg px-4">
           <div className="flex flex-col gap-1">
             <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Rent Price</p>
-            <p className="text-red-600 font-bold text-xl md:text-2xl">AED {property.price?.toLocaleString()}</p>
+            <p className="text-black font-normal text-xl md:text-2xl">AED {property.price?.toLocaleString()}</p>
           </div>
           <div className="flex flex-col gap-1 border-l-0 md:border-l border-gray-200 md:pl-8">
             <p className="font-bold text-gray-400 uppercase text-[10px] tracking-[2px]">Location</p>
@@ -209,7 +209,7 @@ const PropertyInfoRent = () => {
               </div>
               <div className="pt-6">
                 <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">Estimated Monthly Payment:</p>
-                <p className="text-red-600 text-5xl font-medium tracking-tighter">AED {monthlyPayment.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
+                <p className="text-[#D4AF37] text-5xl font-medium tracking-tighter">AED {monthlyPayment.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
               </div>
             </div>
           </div>
@@ -217,15 +217,26 @@ const PropertyInfoRent = () => {
           <div className="bg-[#f9f9f9] p-10 border border-gray-100 shadow-sm">
             <h2 className="text-2xl font-bold mb-6 uppercase tracking-[2px]">Inquire Now</h2>
             <form action="https://formspree.io/f/xdkqzdbk" method="POST" className="space-y-6">
-              <input className="w-full border-b bg-transparent py-4 outline-none focus:border-red-600 font-medium" name="name" placeholder="FULL NAME *" required />
-              <input className="w-full border-b bg-transparent py-4 outline-none focus:border-red-600 font-medium" type="email" name="email" placeholder="EMAIL ADDRESS *" required />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Property Location</label>
+                  <input className="w-full border-b border-gray-300 bg-transparent py-2 outline-none focus:border-red-600 font-bold uppercase text-sm" name="location" value={property.location || ""} readOnly />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Category</label>
+                  <input className="w-full border-b border-gray-300 bg-transparent py-2 outline-none focus:border-red-600 font-bold uppercase text-sm" name="category" value={property.category || "Sale"} readOnly />
+                </div>
+              </div>
+              <input className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600" name="name" placeholder="FULL NAME *" required />
+              <input className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600" type="email" name="email" placeholder="EMAIL ADDRESS *" required />
+              <input className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600" name="phone" placeholder="PHONE NUMBER *" required />
               <textarea 
-                className="w-full border-b bg-transparent py-4 outline-none focus:border-red-600 resize-none font-medium" 
+                className="w-full border-b border-gray-300 bg-transparent py-3 outline-none focus:border-red-600 resize-none" 
                 rows="3" name="message" 
-                defaultValue={`I am interested in ${property.title} for Rent.`}
+                defaultValue={`I am interested in ${property.title} for Sale.`}
                 required 
               />
-              <button className="w-full bg-black text-white py-5 font-bold uppercase hover:bg-red-600 transition-all tracking-[3px] mt-4 text-sm">Send Request</button>
+              <button className="w-full bg-black text-white py-5 font-bold uppercase hover:bg-[#D4AF37] transition-all tracking-[3px] mt-4 text-sm">Send Inquiry</button>
             </form>
           </div>
         </div>
@@ -242,7 +253,7 @@ const PropertyInfoRent = () => {
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold uppercase text-[10px] tracking-wider truncate text-gray-800">{p.title}</h3>
-                    <p className="text-red-600 font-bold mt-1 text-sm">AED {p.price?.toLocaleString()}</p>
+                    <p className="text-[#D4AF37] hover:text-black  font-bold mt-1 text-sm">AED {p.price?.toLocaleString()}</p>
                   </div>
                 </Link>
               ))}
@@ -280,7 +291,7 @@ const PropertyInfoRent = () => {
               <input className="w-full border-b p-3 outline-none focus:border-red-600 uppercase text-sm" name="name" placeholder="Your Name" required />
               <input className="w-full border-b p-3 outline-none focus:border-red-600 uppercase text-sm" type="email" name="email" placeholder="Your Email" required />
               <textarea className="w-full border-b p-3 outline-none focus:border-red-600 uppercase text-sm" name="message" rows="4" defaultValue={`Requesting info for: ${property.title}`} required />
-              <button className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-red-600 transition-all">Submit</button>
+              <button className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-all">Submit</button>
             </form>
           </div>
         </div>
@@ -291,11 +302,11 @@ const PropertyInfoRent = () => {
           <div className="bg-white w-full max-w-xs p-10 text-center relative shadow-2xl border-b-4 border-red-600">
             <button onClick={() => setShowCallPopup(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black"><FaTimes /></button>
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
-               <FaPhoneAlt className="text-red-600 text-2xl" />
+               <FaPhoneAlt className="text-black text-2xl" />
             </div>
             <h2 className="text-xl font-bold mb-2 uppercase tracking-widest">Call Now</h2>
-            <p className="text-gray-500 mb-8 font-medium">+971 4 306 9999</p>
-            <a href="tel:+97143069999" className="inline-block w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-red-600 transition-all">Call Now</a>
+            <p className="text-gray-500 mb-8 font-medium">+971 5 557 37865</p>
+            <a href="tel:+971555737865" className="inline-block w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-all">Call Now</a>
           </div>
         </div>
       )}
