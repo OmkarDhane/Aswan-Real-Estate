@@ -7,8 +7,8 @@ const Services = () => {
   const services = [
     {
       title: "Property Valuation",
-      desc: "we’ll help you find the accurate sale and rental value of your property.",
-      img: "/assets/property-valuation.jpg", 
+      desc: "We’ll help you find the accurate sale and rental value of your property.",
+      img: "/assets/property-valuation.jpg",
       link: "/valuation",
       btn: "Book A Valuation",
     },
@@ -28,9 +28,9 @@ const Services = () => {
     },
     {
       title: "Property Management",
-      desc: "we offer a wide range of property management services in Sharjah.",
+      desc: "We offer a wide range of property management services in Sharjah.",
       img: "/assets/property-management.png",
-      link: "/property-management",
+      link: "/contact",
       btn: "Management Packages",
     },
   ];
@@ -38,7 +38,6 @@ const Services = () => {
   return (
     <section className="bg-[#f4f4f4] py-16 sm:py-20 font-[Poppins]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
-        
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between gap-8 mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-light leading-snug max-w-xl text-black">
@@ -49,12 +48,7 @@ const Services = () => {
             <p className="leading-relaxed mb-4 text-sm sm:text-base">
               Our comprehensive range of property services are designed to simplify ownership, reduce complexity, and enhance long-term value.
             </p>
-            <Link
-              to="/about-us"
-              className="text-black font-normal underline text-sm sm:text-base tracking-wide hover:text-[#D4AF37] transition-colors"
-            >
-              Why Choose Aswan?
-            </Link>
+           
           </div>
         </div>
 
@@ -73,7 +67,6 @@ const Services = () => {
           {services.map((s, i) => (
             <SwiperSlide key={i}>
               <div className="rounded-xl group cursor-pointer bg-white p-4 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100">
-                
                 {/* Image Container */}
                 <div className="h-64 sm:h-72 w-full overflow-hidden rounded-lg mb-5">
                   <img
@@ -86,7 +79,7 @@ const Services = () => {
                 {/* Content */}
                 <div className="px-2 pb-2">
                   <h3 className="text-lg font-normal text-black uppercase tracking-tight">{s.title}</h3>
-                  <p className="mt-2 text-gray-500 text-sm leading-relaxed h-12 line-clamp-2">
+                  <p className="mt-2 text-gray-500 text-sm leading-relaxed">
                     {s.desc}
                   </p>
 

@@ -7,10 +7,10 @@ const SearchPopup = ({ onClose }) => {
 
   const executeSearch = (searchMode) => {
     const path = searchMode === "rent" ? "/for-rent" : "/for-sale";
-    const finalUrl = query.trim() 
-      ? `${path}?search=${encodeURIComponent(query.trim())}` 
+    const finalUrl = query.trim()
+      ? `${path}?search=${encodeURIComponent(query.trim())}`
       : path;
-      
+
     navigate(finalUrl);
     onClose();
   };
@@ -25,33 +25,58 @@ const SearchPopup = ({ onClose }) => {
         className="mt-20 w-full max-w-lg p-8 bg-[#111] rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-[#D4AF37]/30"
       >
         {/* Close Button */}
-        <div className="flex justify-end mb-2">
-          <button 
-            onClick={onClose} 
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={onClose}
             className="text-[#D4AF37] hover:text-white transition-colors text-4xl font-light"
           >
             ×
           </button>
         </div>
 
-        {/* Title with Gold Accent */}
-        <h2 className="text-xl font-light text-white mb-8 text-center uppercase tracking-[0.3em]">
-          Property <span className="text-[#D4AF37] italic">Search</span>
+        {/* UPDATED TITLE */}
+        <h2 className="text-2xl font-light text-white mb-4 text-center capitalize tracking-wide">
+          let’s start your{" "}
+          <span className="text-[#D4AF37] italic">new venture</span> together.
         </h2>
+
+        {/* UPDATED BODY TEXT */}
+        <p className="text-center text-gray-400 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+          
+        </p>
 
         <div className="flex flex-col gap-6">
           {/* Input Box */}
           <input
-            type="text"
-            placeholder="Search by Property Name or Area..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus
-            className="w-full bg-black text-white px-5 py-4 rounded-lg focus:ring-1 focus:ring-[#D4AF37] outline-none border border-gray-800 placeholder:text-gray-600 transition-all"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") executeSearch("sale"); 
-            }}
-          />
+  type="text"
+  placeholder="Find the right property with us, we have a wide range that suit your needs."
+  value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  autoFocus
+  className="
+    w-full
+    bg-black
+    text-white
+    px-5
+    py-4
+    rounded-lg
+    text-sm
+    leading-relaxed
+    focus:ring-1
+    focus:ring-[#D4AF37]
+    outline-none
+    border
+    border-gray-800
+    placeholder:text-gray-500
+    placeholder:text-xs
+    placeholder:leading-snug
+    transition-all
+  "
+  onKeyDown={(e) => {
+    if (e.key === "Enter") executeSearch("sale");
+  }}
+/>
+
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4">
@@ -59,14 +84,14 @@ const SearchPopup = ({ onClose }) => {
               onClick={() => executeSearch("sale")}
               className="bg-[#D4AF37] text-black py-4 rounded-lg font-bold hover:bg-white transition-all uppercase tracking-widest text-sm"
             >
-              Search Buy
+               Buy
             </button>
 
             <button
               onClick={() => executeSearch("rent")}
               className="bg-transparent border border-[#D4AF37] text-[#D4AF37] py-4 rounded-lg font-bold hover:bg-[#D4AF37] hover:text-black transition-all uppercase tracking-widest text-sm"
             >
-              Search Rent
+               Rent
             </button>
           </div>
         </div>

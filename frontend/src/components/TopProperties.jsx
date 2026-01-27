@@ -19,7 +19,7 @@ const SamplePrevArrow = (props) => {
 
 const TopPropertiesForSaleRent = () => {
   const navigate = useNavigate();
-  const tabs = ["Villas", "Apartments", "Townhouse", "Warehouse", "Office"];
+  const tabs = ["Villas", "Apartments", "Warehouse", "Office"];
   const [activeTab, setActiveTab] = useState("Villas");
   const [allProperties, setAllProperties] = useState([]);
   const [loading, setLoading] = useState(true);

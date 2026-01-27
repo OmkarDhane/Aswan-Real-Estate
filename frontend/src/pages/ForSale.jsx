@@ -88,9 +88,10 @@ const ForSale = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 font-[Poppins]">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl mb-6 font-semibold">
-          Properties for Sale in Dubai
-        </h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-black">
+  Properties for Sale in{" "}
+  <span className="text-[#D4AF37] italic">Sharjah</span>
+</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           <select name="area" value={filters.area} onChange={handleFilterChange} className="border rounded px-3 py-2 outline-none focus:border-red-600 hover:text-[#D4AF37]">

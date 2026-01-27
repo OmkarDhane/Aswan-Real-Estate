@@ -85,7 +85,10 @@ const ForRent = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 font-[Poppins]">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-black">Find your perfect home for rent in Dubai.</h1>
+<h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-black">
+  Properties for Rent in{" "}
+  <span className="text-[#D4AF37] italic">Sharjah</span>
+</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           <select name="area" value={filters.area} onChange={handleFilterChange} className="border rounded px-3 py-2 text-sm outline-none focus:border-red-600">

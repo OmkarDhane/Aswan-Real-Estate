@@ -25,14 +25,14 @@ const AboutSection = () => {
         </h1>
 
         {/* LINK SECTION */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <Link
             to="/team"
             className="inline-block border-b-2   px-4 py-2 text-[#D4AF37] text-lg   hover:text-black "
           >
             “Why choose Aswan?” 
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -15,7 +15,7 @@ const MenuPage = () => {
     "Mortgages": "/contact",
     "Knowledge Centre": "/knowledge-centre",
     "Video": "/video",
-    "About Us": "/about-us",
+    // "About Us": "/about-us",
     "Contact": "/contact",
   };
 
@@ -33,7 +33,7 @@ const MenuPage = () => {
     "Mortgages",
     "Knowledge Centre",
     "Video",
-    "About Us",
+    // "About Us",
     "Contact",
   ];
 
