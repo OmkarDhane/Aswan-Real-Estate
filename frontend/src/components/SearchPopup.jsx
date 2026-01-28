@@ -35,10 +35,11 @@ const SearchPopup = ({ onClose }) => {
         </div>
 
         {/* UPDATED TITLE */}
-        <h2 className="text-2xl font-light text-white mb-4 text-center capitalize tracking-wide">
-          let’s start your{" "}
-          <span className="text-[#D4AF37] italic">new venture</span> together.
-        </h2>
+        <h2 className="text-2xl font-light text-white mb-4 text-center uppercase tracking-widest">
+  <span>PROPERTY </span>
+  <span className="text-[#D4AF37] italic">SEARCH</span>
+</h2>
+
 
         {/* UPDATED BODY TEXT */}
         <p className="text-center text-gray-400 text-sm leading-relaxed mb-8 max-w-md mx-auto">
@@ -49,7 +50,7 @@ const SearchPopup = ({ onClose }) => {
           {/* Input Box */}
           <input
   type="text"
-  placeholder="Find the right property with us, we have a wide range that suit your needs."
+  placeholder="Serach by Property, Name or Area."
   value={query}
   onChange={(e) => setQuery(e.target.value)}
   autoFocus
@@ -57,7 +58,7 @@ const SearchPopup = ({ onClose }) => {
     w-full
     bg-black
     text-white
-    px-5
+    px-7
     py-4
     rounded-lg
     text-sm
@@ -82,14 +83,14 @@ const SearchPopup = ({ onClose }) => {
           <div className="grid grid-cols-2 gap-4">
             <button
               onClick={() => executeSearch("sale")}
-              className="bg-[#D4AF37] text-black py-4 rounded-lg font-bold hover:bg-white transition-all uppercase tracking-widest text-sm"
+              className="bg-[#D4AF37] text-black py-3 rounded-lg font-bold hover:bg-white transition-all uppercase tracking-widest text-sm"
             >
                Buy
             </button>
 
             <button
               onClick={() => executeSearch("rent")}
-              className="bg-transparent border border-[#D4AF37] text-[#D4AF37] py-4 rounded-lg font-bold hover:bg-[#D4AF37] hover:text-black transition-all uppercase tracking-widest text-sm"
+              className="bg-transparent border border-[#D4AF37] text-[#D4AF37] py-3 rounded-lg font-bold hover:bg-[#D4AF37] hover:text-black transition-all uppercase tracking-widest text-sm"
             >
                Rent
             </button>

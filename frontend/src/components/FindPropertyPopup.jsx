@@ -32,11 +32,10 @@ const FindPropertyPopup = ({ onClose }) => {
         "
       >
         <h3 className="text-lg font-normal mb-2 text-gray-900">
-          Let’s find your new home together
+          let’s start your new venture together.
         </h3>
         <p className="text-sm text-gray-600 mb-4">
-          let’s start your new venture together. Find the right property with us, we have a wide range that suit your needs.
-        </p>
+Find the right property with us, we have a wide range that suit your needs. that was for this modal:        </p>
 
         <div className="flex flex-col sm:flex-row gap-3">
           <button
