@@ -20,13 +20,6 @@ const Services = () => {
       btn: "Property Search",
     },
     {
-      title: "About us",
-      desc: "Sharjah is home to opportunities for people looking to invest in property.",
-      img: "/assets/offplan.webp",
-      link: "/about-us",
-      btn: "About us",
-    },
-    {
       title: "Property Management",
       desc: "We offer a wide range of property management services in Sharjah.",
       img: "/assets/property-management.png",
@@ -39,7 +32,7 @@ const Services = () => {
     <section className="bg-[#f4f4f4] py-16 sm:py-20 font-[Poppins]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row justify-between gap-8 mb-12 sm:mb-16">
+        <div className="flex flex-col lg:flex-row justify-center gap-8 mb-12 sm:mb-16 text-center lg:text-left items-center lg:items-start">
           <h2 className="text-3xl sm:text-4xl font-light leading-snug max-w-xl text-black">
             Sharjah <span className="text-[#D4AF37] italic font-normal">Real Estate Agency</span>
             <br /> Property Services
@@ -48,25 +41,26 @@ const Services = () => {
             <p className="leading-relaxed mb-4 text-sm sm:text-base">
               Our comprehensive range of property services are designed to simplify ownership, reduce complexity, and enhance long-term value.
             </p>
-           
           </div>
         </div>
 
         {/* Slider */}
         <Swiper
           spaceBetween={20}
-          slidesPerView={1}
+          slidesPerView={3}
+          centeredSlides={true}               // <-- Cards middle
+          centerInsufficientSlides={true}    // <-- Agar 3 card hi kam asel, te pan center
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 4 },
+            1280: { slidesPerView: 3 }, // 3 cards maximum
           }}
           className="pb-10"
         >
           {services.map((s, i) => (
-            <SwiperSlide key={i}>
-              <div className="rounded-xl group cursor-pointer bg-white p-4 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100">
+            <SwiperSlide key={i} className="flex justify-center">
+              <div className="rounded-xl group cursor-pointer bg-white p-4 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 max-w-xs w-full">
                 {/* Image Container */}
                 <div className="h-64 sm:h-72 w-full overflow-hidden rounded-lg mb-5">
                   <img
@@ -77,7 +71,7 @@ const Services = () => {
                 </div>
 
                 {/* Content */}
-                <div className="px-2 pb-2">
+                <div className="px-2 pb-2 text-center">
                   <h3 className="text-lg font-normal text-black uppercase tracking-tight">{s.title}</h3>
                   <p className="mt-2 text-gray-500 text-sm leading-relaxed">
                     {s.desc}
