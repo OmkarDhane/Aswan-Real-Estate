@@ -35,7 +35,7 @@ const FindPropertyPopup = ({ onClose }) => {
           let’s start your new venture together.
         </h3>
         <p className="text-sm text-gray-600 mb-4">
-Find the right property with us, we have a wide range that suit your needs. that was for this modal:        </p>
+Find the right property with us, we have a wide range that suit your needs.</p>
 
         <div className="flex flex-col sm:flex-row gap-3">
           <button

@@ -86,13 +86,27 @@ const Footer = () => {
         </div>
 
         {/* SOCIAL ICONS */}
-        <div className="flex md:justify-end items-center gap-4 sm:gap-6 mt-6 md:mt-0">
-          <FaTwitter className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
-          <FaFacebookF className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
-          <FaYoutube className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
-          <FaInstagram className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
-          <FaLinkedinIn className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
-        </div>
+<div className="flex md:justify-end items-center gap-4 sm:gap-6 mt-6 md:mt-0">
+  {/* <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer">
+    <FaTwitter className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+  </a> */}
+  
+  {/* <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer">
+    <FaFacebookF className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+  </a> */}
+  
+  {/* <a href="https://youtube.com/yourchannel" target="_blank" rel="noopener noreferrer">
+    <FaYoutube className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+  </a> */}
+  
+  <a href="https://www.instagram.com/aswanrealestate?igsh=MXFrNjdpc3RtbDk1NQ==" target="_blank" rel="noopener noreferrer">
+    <FaInstagram className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+  </a>
+  
+  <a href="https://www.linkedin.com/in/aswan-real-estate/" target="_blank" rel="noopener noreferrer">
+    <FaLinkedinIn className="cursor-pointer transition hover:text-[#D4AF37] hover:scale-110 text-2xl sm:text-3xl" />
+  </a>
+</div>
       </div>
 
       {/* BOTTOM: LOGO + LINKS + CREDIT */}

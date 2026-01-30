@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const Services = () => {
   const services = [
@@ -46,18 +48,16 @@ const Services = () => {
 
         {/* Slider */}
         <Swiper
-          spaceBetween={20}
-          slidesPerView={3}
-          centeredSlides={true}               // <-- Cards middle
-          centerInsufficientSlides={true}    // <-- Agar 3 card hi kam asel, te pan center
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 3 }, // 3 cards maximum
-          }}
-          className="pb-10"
-        >
+  spaceBetween={30}
+  slidesPerView={1} // Default mobile साठी 1
+  loop={true}      // Cards सतत फिरण्यासाठी
+  breakpoints={{
+    640: { slidesPerView: 1 },
+    768: { slidesPerView: 2 },
+    1024: { slidesPerView: 3 }, // Desktop वर 3 दिसतील
+  }}
+  className="pb-10"
+>
           {services.map((s, i) => (
             <SwiperSlide key={i} className="flex justify-center">
               <div className="rounded-xl group cursor-pointer bg-white p-4 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 max-w-xs w-full">

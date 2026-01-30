@@ -50,7 +50,7 @@ const SearchPopup = ({ onClose }) => {
           {/* Input Box */}
           <input
   type="text"
-  placeholder="Serach by Property, Name or Area."
+  placeholder="Serach by Property, Name or Area...."
   value={query}
   onChange={(e) => setQuery(e.target.value)}
   autoFocus
