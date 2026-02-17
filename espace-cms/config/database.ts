@@ -1,20 +1,18 @@
 import path from 'path';
 
 export default ({ env }: { env: any }) => {
-  const client = env('DATABASE_CLIENT', 'sqlite');
+  const client = env('DATABASE_CLIENT', 'postgres'); // Default postgres करा
 
   const connections = {
     postgres: {
       connection: {
-        connectionString: env('DATABASE_URL'),
-        ssl: env.bool('DATABASE_SSL', false) && {
+        // आपण वर बदललेलं नवीन नाव इथे वापरायचं
+        connectionString: env('DB_URL_V2'), 
+        ssl: {
           rejectUnauthorized: false,
         },
       },
-      pool: { 
-        min: env.int('DATABASE_POOL_MIN', 2), 
-        max: env.int('DATABASE_POOL_MAX', 10) 
-      },
+      pool: { min: 2, max: 10 },
     },
     sqlite: {
       connection: {
