@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const API_URL = "https://aswan-real-estate-3.onrender.com";
+const API_URL = "https://aswan-real-estate-4.onrender.com";
 
 /* ---------- Slider Arrows ---------- */
 const SampleNextArrow = ({ className, style, onClick }) => (

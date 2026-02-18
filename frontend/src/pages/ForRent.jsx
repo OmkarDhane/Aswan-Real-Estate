@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
 // Render Live API URL
-const API_URL = "https://aswan-real-estate-3.onrender.com";
+const API_URL = "https://aswan-real-estate-4.onrender.com";
 
 const getUniqueValues = (items, key) => {
   const values = items
