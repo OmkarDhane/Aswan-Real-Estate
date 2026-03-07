@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-const API_URL = "https://aswan-real-estate-4.onrender.com";
+const API_URL = "https://aswan-real-estate-kwbh.onrender.com";
 
 const Hero = () => {
   const navigate = useNavigate();
